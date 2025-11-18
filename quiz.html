@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz JAF - Le Jardin aux Fontaines</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #2ecc71;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .quiz-section {
+            flex: 1;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-intro, .quiz-results {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-intro p, .quiz-results p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quiz-progress {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary-color);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(52, 152, 219, 0.05);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .options-list {
+            list-style-type: none;
+        }
+        
+        .option-item {
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option-item:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .option-item.selected {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .option-item.correct {
+            border-color: var(--success-color);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .option-item.incorrect {
+            border-color: var(--accent-color);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .option-radio {
+            margin-right: 0.8rem;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--secondary-color);
+        }
+        
+        .option-text {
+            flex-grow: 1;
+        }
+        
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-disabled:hover {
+            background-color: #ccc;
+        }
+        
+        .result-summary {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .result-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .result-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .question-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .question-feedback.correct {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question-feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #c0392b;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .back-button {
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .quiz-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Le Jardin aux Fontaines</a>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="contact-link">JAF Data</a></li>
+                        <li><a href="stats.html">Statistiques</a></li>
+                        <li><a href="index.html">Accueil</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="quiz-section">
+        <div class="container">
+            <h1 class="section-title">Quiz des Fontaines</h1>
+            
+            <div class="quiz-container" id="quiz-container">
+                <!-- Quiz intro shown by default -->
+                <div class="quiz-intro" id="quiz-intro">
+                    <h2>Testez vos connaissances sur le Jardin aux Fontaines !</h2>
+                    <p>Ce quiz contient 5 questions sur les propriétés et la distribution des logements au sein du Jardin aux Fontaines. Voyons combien vous en savez sur notre belle résidence !</p>
+                    <button class="btn" id="start-quiz">Commencer le Quiz</button>
+                </div>
+                
+                <!-- Quiz questions - hidden initially -->
+                <div id="quiz-content" style="display: none;">
+                    <div class="quiz-progress">
+                        <div id="progress-text">Question 1 sur 5</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card" id="question-card">
+                        <!-- Questions will be inserted here by JavaScript -->
+                    </div>
+                    
+                    <div class="question-feedback" id="feedback"></div>
+                    
+                    <div class="quiz-buttons">
+                        <button class="btn btn-outline" id="prev-btn" style="display: none;">Question précédente</button>
+                        <button class="btn btn-disabled" id="next-btn" disabled>Question suivante</button>
+                    </div>
+                </div>
+                
+                <!-- Results screen - hidden initially -->
+                <div class="quiz-results" id="quiz-results" style="display: none;">
+                    <div class="result-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="result-summary">Félicitations !</div>
+                    <div class="result-score" id="result-score">0/5</div>
+                    <div class="result-message" id="result-message">Vous êtes un expert du Jardin aux Fontaines !</div>
+                    <button class="btn btn-success" id="restart-quiz">Recommencer le Quiz</button>
+                </div>
+            </div>
+            
+            <div class="back-button">
+                <a href="index.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Le Jardin aux Fontaines. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Password Modal -->
+    <div class="modal" id="password-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Accès protégé</h2>
+            <p>Veuillez entrer le mot de passe pour accéder à JAF Data.</p>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password">
+                <div class="error-message" id="password-error">Mot de passe incorrect. Veuillez réessayer.</div>
+            </div>
+            <button class="btn" id="submit-password">Accéder</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz Questions
+            const questions = [
+                {
+                    question: "Quel est le pourcentage de propriétaires à la Fontaine des Devins ?",
+                    options: ["25%", "49%", "57%", "82%"],
+                    correctAnswer: 3, // 82%
+                    explanation: "La Fontaine des Devins a le plus haut taux de propriétaires avec 82% (49 propriétaires sur un total de 60 logements)."
+                },
+                {
+                    question: "Quelle fontaine a le plus grand nombre total de logements ?",
+                    options: ["Aux Devins", "Aux Prophètes", "Aux Songes", "Aux Chimères"],
+                    correctAnswer: 3, // Aux Chimères
+                    explanation: "La Fontaine des Chimères possède 116 logements au total, ce qui en fait la plus grande des quatre fontaines."
+                },
+                {
+                    question: "Combien y a-t-il de propriétaires résidant au JAF ?",
+                    options: ["124", "150", "170", "294"],
+                    correctAnswer: 2, // 165
+                    explanation: "Il y a 165 propriétaires qui résident au JAF, soit 56% de tous les propriétaires."
+                },
+                {
+                    question: "Quelle fontaine a le plus petit pourcentage de propriétaires ?",
+                    options: ["Aux Devins", "Aux Prophètes", "Aux Songes", "Aux Chimères"],
+                    correctAnswer: 1, // Aux Prophètes
+                    explanation: "La Fontaine des Prophètes a le taux le plus bas avec seulement 25% de propriétaires (19 sur 76 logements)."
+                },
+                {
+                    question: "Quel est le nombre total de propriétaires au JAF (résidents et externes) ?",
+                    options: ["170", "289", "294", "444"],
+                    correctAnswer: 2, // 294
+                    explanation: "Il y a un total de 294 propriétaires au JAF, dont 165 résidents et 124 externes, plus 5 non identifiés."
+                }
+            ];
+            
+            // Quiz Variables
+            let currentQuestion = 0;
+            let score = 0;
+            let userAnswers = Array(questions.length).fill(null);
+            
+            // DOM Elements
+            const quizIntro = document.getElementById('quiz-intro');
+            const quizContent = document.getElementById('quiz-content');
+            const quizResults = document.getElementById('quiz-results');
+            const questionCard = document.getElementById('question-card');
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const feedbackElement = document.getElementById('feedback');
+            const startBtn = document.getElementById('start-quiz');
+            const restartBtn = document.getElementById('restart-quiz');
+            const resultScore = document.getElementById('result-score');
+            const resultMessage = document.getElementById('result-message');
+            
+            // Start Quiz
+            startBtn.addEventListener('click', function() {
+                quizIntro.style.display = 'none';
+                quizContent.style.display = 'block';
+                showQuestion(0);
+            });
+            
+            // Restart Quiz
+            restartBtn.addEventListener('click', function() {
+                currentQuestion = 0;
+                score = 0;
+                userAnswers = Array(questions.length).fill(null);
+                quizResults.style.display = 'none';
+                quizContent.style.display = 'block';
+                showQuestion(0);
+            });
+            
+            // Show Question
+            function showQuestion(questionIndex) {
+                const question = questions[questionIndex];
+                
+                // Update progress
+                progressText.textContent = `Question ${questionIndex + 1} sur ${questions.length}`;
+                progressFill.style.width = `${((questionIndex + 1) / questions.length) * 100}%`;
+                
+                // Build question HTML
+                let questionHTML = `
+                    <div class="question-title">${question.question}</div>
+                    <ul class="options-list">
+                `;
+                
+                // Add options
+                question.options.forEach((option, index) => {
+                    const isSelected = userAnswers[questionIndex] === index;
+                    const optionClass = isSelected ? 'selected' : '';
+                    
+                    questionHTML += `
+                        <li class="option-item ${optionClass}" data-index="${index}">
+                            <input type="radio" name="q${questionIndex}" class="option-radio" ${isSelected ? 'checked' : ''}>
+                            <span class="option-text">${option}</span>
+                        </li>
+                    `;
+                });
+                
+                questionHTML += `</ul>`;
+                questionCard.innerHTML = questionHTML;
+                
+                // Add event listeners to options
+                document.querySelectorAll('.option-item').forEach(option => {
+                    option.addEventListener('click', function() {
+                        selectOption(this);
+                    });
+                });
+                
+                // Update button states
+                prevBtn.style.display = questionIndex > 0 ? 'block' : 'none';
+                
+                if (userAnswers[questionIndex] !== null) {
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('btn-disabled');
+                } else {
+                    nextBtn.disabled = true;
+                    nextBtn.classList.add('btn-disabled');
+                }
+                
+                // Change next button text for last question
+                if (questionIndex === questions.length - 1) {
+                    nextBtn.textContent = 'Voir les résultats';
+                } else {
+                    nextBtn.textContent = 'Question suivante';
+                }
+                
+                // Hide feedback
+                feedbackElement.style.display = 'none';
+                
+                // Update current question
+                currentQuestion = questionIndex;
+            }
+            
+            // Select Option
+            function selectOption(optionElement) {
+                // Remove selected class from all options
+                document.querySelectorAll('.option-item').forEach(option => {
+                    option.classList.remove('selected');
+                    option.querySelector('input').checked = false;
+                });
+                
+                // Add selected class to clicked option
+                optionElement.classList.add('selected');
+                optionElement.querySelector('input').checked = true;
+                
+                // Save answer
+                const selectedIndex = parseInt(optionElement.getAttribute('data-index'));
+                userAnswers[currentQuestion] = selectedIndex;
+                
+                // Enable next button
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('btn-disabled');
+            }
+            
+            // Next Question
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < questions.length - 1) {
+                    showQuestion(currentQuestion + 1);
+                } else {
+                    showResults();
+                }
+            });
+            
+            // Previous Question
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 0) {
+                    showQuestion(currentQuestion - 1);
+                }
+            });
+            
+            // Show Results
+            function showResults() {
+                // Calculate score
+                score = 0;
+                userAnswers.forEach((answer, index) => {
+                    if (answer === questions[index].correctAnswer) {
+                        score++;
+                    }
+                });
+                
+                // Update results screen
+                resultScore.textContent = `${score}/${questions.length}`;
+                
+                // Customize message based on score
+                if (score === questions.length) {
+                    resultMessage.textContent = "Parfait ! Vous êtes un véritable expert du Jardin aux Fontaines !";
+                } else if (score >= questions.length * 0.8) {
+                    resultMessage.textContent = "Excellent ! Vous connaissez très bien le Jardin aux Fontaines.";
+                } else if (score >= questions.length * 0.6) {
+                    resultMessage.textContent = "Bien joué ! Vous avez de bonnes connaissances sur le Jardin aux Fontaines.";
+                } else if (score >= questions.length * 0.4) {
+                    resultMessage.textContent = "Pas mal ! Vous commencez à connaître le Jardin aux Fontaines.";
+                } else {
+                    resultMessage.textContent = "Vous avez encore des choses à découvrir sur le Jardin aux Fontaines !";
+                }
+                
+                // Show results screen
+                quizContent.style.display = 'none';
+                quizResults.style.display = 'block';
+            }
+            
+            // Password protection
+            document.getElementById('contact-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('password-modal').style.display = 'flex';
+            });
+            
+            // Close modal
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                document.getElementById('password-modal').style.display = 'none';
+                document.getElementById('password-error').style.display = 'none';
+                document.getElementById('password').value = '';
+            });
+            
+            // Password check
+            document.getElementById('submit-password').addEventListener('click', function() {
+                const password = document.getElementById('password').value;
+                // Simple password: jaf2025
+                if(password === 'jaf2025') {
+                    window.location.href = 'contact.html';
+                } else {
+                    document.getElementById('password-error').style.display = 'block';
+                }
+            });
+            
+            // Allow Enter key to submit password
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') {
+                    document.getElementById('submit-password').click();
+                }
+            });
+            
+            // Close modal if clicked outside
+            window.addEventListener('click', function(e) {
+                if(e.target === document.getElementById('password-modal')) {
+                    document.getElementById('password-modal').style.display = 'none';
+                    document.getElementById('password-error').style.display = 'none';
+                    document.getElementById('password').value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

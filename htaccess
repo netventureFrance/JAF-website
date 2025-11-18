@@ -1,0 +1,6 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^jaf\.immo\.coeurdelom\.fr$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.jaf\.immo\.coeurdelom\.fr$
+RewriteRule ^/?$ "http\:\/\/jaf\.immo\/" [R=301,L]
+

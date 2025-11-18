@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JAF.immo | Le Jardin aux Fontaines</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background-color: var(--light-color);
+            padding: 80px 0 40px;
+            background-size: auto 70%;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        /* Fountain hotspots */
+        .fountain-hotspots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .hotspot {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .hotspot:hover {
+            transform: scale(1.2);
+        }
+        
+        .hotspot::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            content: "\f043"; /* water droplet icon */
+            font-size: 24px;
+            color: #3498db;
+        }
+        
+        .hotspot::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--dark-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        
+        .hotspot:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Custom fountain icons for specific hotspots */
+        #hotspot1::before { content: "\f773"; } /* spray can for Fontaine des Songes */
+        #hotspot2::before { content: "\f72e"; } /* people arrows for Fontaine des Prophètes */
+        #hotspot3::before { content: "\f54e"; } /* store for Fontaine des Devins (central) */
+        #hotspot4::before { content: "\f6d5"; } /* dragon for Fontaine des Chimères */
+        #hotspot5::before { content: "\f5e1"; } /* car side for CSS des Parkings Extérieurs */
+        #hotspot6::before { content: "\f1b9"; } /* car for CSS des Parkings Nazareth */
+        #hotspot7::before { content: "\f21e"; } /* heartbeat for SCP */
+        
+        /* Position each hotspot over the corresponding blue circle */
+        #hotspot1 {
+            top: 75%;
+            left: 41%;
+        }
+        
+        #hotspot2 {
+            top: 81%;
+            left: 46%;
+        }
+        
+        #hotspot3 {
+            top: 84%;
+            left: 50%;
+        }
+        
+        #hotspot4 {
+            top: 81%;
+            left: 54%;
+        }
+        
+        #hotspot5 {
+            top: 75%;
+            left: 59%;
+        }
+        
+        #hotspot6 {
+            top: 66%;
+            left: 63%;
+        }
+        
+        #hotspot7 {
+            top: 66%;
+            left: 37%;
+        }
+        
+        /* Add pulse animation for the icons */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+            }
+            100% {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(52, 152, 219, 0.7);
+            }
+        }
+        
+        /* Fountain animation */
+        @keyframes fountain {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-3px) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Mobile responsive styles */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 1rem;
+            }
+            
+            .hero {
+                background-size: 75% auto;
+                background-position: center 40%;
+                min-height: 100vh;
+                padding-top: 120px;
+            }
+            
+            /* Adjust hotspot positions for mobile and make icons smaller */
+            .hotspot::before {
+                font-size: 18px;
+            }
+            
+            #hotspot1 {
+                top: 70%;
+                left: 41%;
+            }
+            
+            #hotspot2 {
+                top: 76%;
+                left: 46%;
+            }
+            
+            #hotspot3 {
+                top: 79%;
+                left: 50%;
+            }
+            
+            #hotspot4 {
+                top: 76%;
+                left: 54%;
+            }
+            
+            #hotspot5 {
+                top: 70%;
+                left: 59%;
+            }
+            
+            #hotspot6 {
+                top: 66%;
+                left: 63%;
+            }
+            
+            #hotspot7 {
+                top: 66%;
+                left: 37%;
+            }
+            
+            /* Disable tooltips on mobile but keep circles */
+            .hotspot::after {
+                display: none;
+            }
+        }
+        
+        /* Portrait mobile orientation (9:16) */
+        @media screen and (max-width: 480px) and (orientation: portrait) {
+            .hero {
+                background-position: center 35%;
+                background-size: 100% auto;
+                min-height: 100vh;
+                padding-bottom: 60px;
+            }
+            
+            .hotspot::before {
+                font-size: 16px;
+            }
+            
+            /* Adjust positions for portrait orientation - moved lower */
+            #hotspot1 {
+                top: 63%;
+                left: 41%;
+            }
+            
+            #hotspot2 {
+                top: 69%;
+                left: 46%;
+            }
+            
+            #hotspot3 {
+                top: 72%;
+                left: 50%;
+            }
+            
+            #hotspot4 {
+                top: 69%;
+                left: 54%;
+            }
+            
+            #hotspot5 {
+                top: 63%;
+                left: 59%;
+            }
+            
+            #hotspot6 {
+                top: 59%;
+                left: 63%;
+            }
+            
+            #hotspot7 {
+                top: 59%;
+                left: 37%;
+            }
+            
+            /* Reduce animation intensity for mobile */
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+                }
+                100% {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+                }
+            }
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Le Jardin aux Fontaines</a>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="contact-link">JAF Data</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" style="background: url('JAF.png') center/contain no-repeat; background-position: center 45%;">
+        <div class="container">
+            <div class="hero-content">
+                <!-- Content removed as requested -->
+            </div>
+            
+            <!-- Fountain icons instead of blue circles -->
+            <div class="fountain-hotspots">
+                <div class="hotspot" id="hotspot1" data-tooltip="Fontaine des Songes"></div>
+                <div class="hotspot" id="hotspot2" data-tooltip="Fontaine des Prophètes"></div>
+                <div class="hotspot" id="hotspot3" data-tooltip="Fontaine des Devins"></div>
+                <div class="hotspot" id="hotspot4" data-tooltip="Fontaine des Chimères"></div>
+                <div class="hotspot" id="hotspot5" data-tooltip="CSS des Parkings Extérieurs"></div>
+                <div class="hotspot" id="hotspot6" data-tooltip="CSS des Parkings Nazareth"></div>
+                <div class="hotspot" id="hotspot7" data-tooltip="CSP"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Password Modal -->
+    <div class="modal" id="password-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Accès protégé</h2>
+            <p>Veuillez entrer le mot de passe pour accéder à JAF Data.</p>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password">
+                <div class="error-message" id="password-error">Mot de passe incorrect. Veuillez réessayer.</div>
+            </div>
+            <button class="btn" id="submit-password">Accéder</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Le Jardin aux Fontaines. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded');
+            
+            // Apply animations to fountain icons
+            const hotspots = document.querySelectorAll('.hotspot');
+            
+            hotspots.forEach(hotspot => {
+                // Add fountain animation
+                const animationDuration = (Math.random() * 2) + 2; // Between 2-4 seconds
+                hotspot.style.animation = `fountain ${animationDuration}s infinite`;
+                
+                // Add tap event for mobile to show tooltip information
+                hotspot.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    
+                    // Create temporary tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.textContent = this.getAttribute('data-tooltip');
+                    tooltip.style.position = 'absolute';
+                    tooltip.style.backgroundColor = 'rgba(44, 62, 80, 0.9)';
+                    tooltip.style.color = 'white';
+                    tooltip.style.padding = '8px 15px';
+                    tooltip.style.borderRadius = '5px';
+                    tooltip.style.zIndex = '100';
+                    tooltip.style.fontSize = '14px';
+                    tooltip.style.top = '30px';
+                    tooltip.style.left = '50%';
+                    tooltip.style.transform = 'translateX(-50%)';
+                    tooltip.style.whiteSpace = 'nowrap';
+                    
+                    // Remove any existing tooltips
+                    const existingTooltips = document.querySelectorAll('.mobile-tooltip');
+                    existingTooltips.forEach(t => t.remove());
+                    
+                    tooltip.className = 'mobile-tooltip';
+                    this.appendChild(tooltip);
+                    
+                    // Remove after delay
+                    setTimeout(() => {
+                        tooltip.remove();
+                    }, 2000);
+                });
+            });
+            
+            // Randomly change the hue of the icons for visual variety
+            hotspots.forEach(hotspot => {
+                const hue = Math.floor(Math.random() * 40) + 190; // 190-230 (blue range)
+                hotspot.style.color = `hsl(${hue}, 80%, 50%)`;
+                hotspot.style.textShadow = `0 0 5px hsla(${hue}, 80%, 70%, 0.8)`;
+            });
+            
+            // Password protection
+            document.getElementById('contact-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('password-modal').style.display = 'flex';
+            });
+            
+            // Close modal
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                document.getElementById('password-modal').style.display = 'none';
+                document.getElementById('password-error').style.display = 'none';
+                document.getElementById('password').value = '';
+            });
+            
+            // Password check
+            document.getElementById('submit-password').addEventListener('click', function() {
+                const password = document.getElementById('password').value;
+                // Simple password: jaf2025
+                if(password === 'jaf2025') {
+                    window.location.href = 'contact.html';
+                } else {
+                    document.getElementById('password-error').style.display = 'block';
+                }
+            });
+            
+            // Allow Enter key to submit password
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') {
+                    document.getElementById('submit-password').click();
+                }
+            });
+            
+            // Close modal if clicked outside
+            window.addEventListener('click', function(e) {
+                if(e.target === document.getElementById('password-modal')) {
+                    document.getElementById('password-modal').style.display = 'none';
+                    document.getElementById('password-error').style.display = 'none';
+                    document.getElementById('password').value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
