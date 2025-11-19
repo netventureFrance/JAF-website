@@ -693,7 +693,16 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier que Chart.js est chargé
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            console.log('Chart.js disponible:', typeof Chart !== 'undefined');
+
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js n\'est pas chargé!');
+                return;
+            }
+
             // Chart.js implementation
             // Data
             const propertyData = [
@@ -704,8 +713,14 @@
             ];
             
             // First bar chart
-            const barCtx1 = document.getElementById('bar-chart-1').getContext('2d');
-            new Chart(barCtx1, {
+            console.log('Création du graphique 1...');
+            const barCtx1 = document.getElementById('bar-chart-1');
+            if (!barCtx1) {
+                console.error('Canvas bar-chart-1 introuvable!');
+                return;
+            }
+            const ctx1 = barCtx1.getContext('2d');
+            const chart1 = new Chart(ctx1, {
                 type: 'bar',
                 data: {
                     labels: propertyData.map(item => item.name),
@@ -789,7 +804,8 @@
                     }
                 }
             });
-            
+            console.log('Graphique 1 créé avec succès');
+
             // Second bar chart
             const barCtx2 = document.getElementById('bar-chart-2').getContext('2d');
             new Chart(barCtx2, {
