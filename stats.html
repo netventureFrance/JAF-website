@@ -508,12 +508,12 @@
                 </div>
                 <div class="pie-legend">
                     <div class="pie-legend-item">
-                        <div class="legend-color" style="background-color: #00C49F;"></div>
-                        <div>Résidents au JAF: 170 (58%)</div>
+                        <div class="legend-color" style="background-color: rgb(37, 99, 235); border-radius: 50%;"></div>
+                        <div style="font-weight: 500;">Résidents au JAF: 170 (58%)</div>
                     </div>
                     <div class="pie-legend-item">
-                        <div class="legend-color" style="background-color: #FF8042;"></div>
-                        <div>Externes (Locataires): 124 (42%)</div>
+                        <div class="legend-color" style="background-color: rgb(245, 158, 11); border-radius: 50%;"></div>
+                        <div style="font-weight: 500;">Externes (Locataires): 124 (42%)</div>
                     </div>
                 </div>
                 <!-- Carte interactive du JAF -->
@@ -713,25 +713,78 @@
                         {
                             label: 'Propriétaires',
                             data: propertyData.map(item => item.proprietaires),
-                            backgroundColor: '#82ca9d',
-                            borderColor: '#82ca9d',
-                            borderWidth: 1
+                            backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                            borderColor: 'rgb(37, 99, 235)',
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            hoverBackgroundColor: 'rgba(37, 99, 235, 1)'
                         },
                         {
                             label: 'Locataires',
                             data: propertyData.map(item => item.locataires),
-                            backgroundColor: '#8884d8',
-                            borderColor: '#8884d8',
-                            borderWidth: 1
+                            backgroundColor: 'rgba(14, 165, 233, 0.8)',
+                            borderColor: 'rgb(14, 165, 233)',
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            hoverBackgroundColor: 'rgba(14, 165, 233, 1)'
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            borderWidth: 1,
+                            cornerRadius: 8
+                        }
+                    },
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(203, 213, 225, 0.3)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#475569'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                color: '#334155'
+                            }
                         }
                     }
                 }
@@ -747,23 +800,92 @@
                         {
                             label: 'Taux de propriété (%)',
                             data: propertyData.map(item => item.percentage),
-                            backgroundColor: '#8884d8',
-                            borderColor: '#8884d8',
-                            borderWidth: 1
+                            backgroundColor: [
+                                'rgba(245, 158, 11, 0.8)',
+                                'rgba(239, 68, 68, 0.8)',
+                                'rgba(14, 165, 233, 0.8)',
+                                'rgba(16, 185, 129, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgb(245, 158, 11)',
+                                'rgb(239, 68, 68)',
+                                'rgb(14, 165, 233)',
+                                'rgb(16, 185, 129)'
+                            ],
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            hoverBackgroundColor: [
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(14, 165, 233, 1)',
+                                'rgba(16, 185, 129, 1)'
+                            ]
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
                             max: 100,
+                            grid: {
+                                color: 'rgba(203, 213, 225, 0.3)',
+                                drawBorder: false
+                            },
                             ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#475569',
                                 callback: function(value) {
                                     return value + '%';
                                 }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                color: '#334155'
                             }
                         }
                     }
@@ -776,7 +898,8 @@
                 { name: 'Externes (Locataires)', value: 124 } // Propriétaires externes qui louent leur logement
             ];
 
-            const COLORS = ['#00C49F', '#FF8042'];
+            const COLORS = ['rgba(37, 99, 235, 0.8)', 'rgba(245, 158, 11, 0.8)'];
+            const BORDER_COLORS = ['rgb(37, 99, 235)', 'rgb(245, 158, 11)'];
 
             // Créer le graphique circulaire
             const pieCtx = document.getElementById('pie-chart').getContext('2d');
@@ -788,8 +911,10 @@
                         {
                             data: residenceData.map(item => item.value),
                             backgroundColor: COLORS,
-                            borderColor: 'white',
-                            borderWidth: 1
+                            borderColor: BORDER_COLORS,
+                            borderWidth: 3,
+                            hoverBackgroundColor: ['rgba(37, 99, 235, 1)', 'rgba(245, 158, 11, 1)'],
+                            hoverBorderWidth: 4
                         }
                     ]
                 },
@@ -801,6 +926,18 @@
                             display: false // Nous utilisons notre propre légende
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
                             callbacks: {
                                 label: function(context) {
                                     const value = context.raw;
