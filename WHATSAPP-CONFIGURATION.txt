@@ -1,0 +1,101 @@
+================================================================================
+WHATSAPP CONFIGURATION - ÉTAPES RAPIDES
+================================================================================
+
+Votre site JAF est maintenant prêt pour WhatsApp !
+Il ne reste que 2 choses à configurer :
+
+================================================================================
+ÉTAPE 1 : AJOUTER VOTRE LIEN DE GROUPE WHATSAPP
+================================================================================
+
+1. Ouvrez le fichier : whatsapp-config.js
+
+2. Trouvez cette ligne :
+   groupLink: "",
+
+3. Remplacez-la par votre lien de groupe :
+   groupLink: "https://chat.whatsapp.com/VOTRE_LIEN_ICI",
+
+   (Vous avez indiqué que vous avez déjà ce lien)
+
+
+================================================================================
+ÉTAPE 2 : AJOUTER LE QR CODE (OPTIONNEL)
+================================================================================
+
+Pour que le QR code s'affiche sur la page d'accueil :
+
+1. Générez le QR code de votre groupe :
+   - Option A : Dans WhatsApp > Groupe > Menu > "Inviter via un lien" > "Code QR"
+   - Option B : Sur https://qr-code-generator.com avec le lien de votre groupe
+
+2. Sauvegardez l'image comme : whatsapp-qr.png
+
+3. Placez ce fichier dans le dossier racine du site (à côté de index.html)
+
+
+================================================================================
+OPTIONNEL : AJOUTER UN NUMÉRO WHATSAPP BUSINESS
+================================================================================
+
+Pour activer le bouton flottant de contact direct :
+
+1. Créez un compte WhatsApp Business (voir guide complet dans docs/WHATSAPP-SETUP.md)
+
+2. Dans whatsapp-config.js, trouvez :
+   adminNumber: "",
+
+3. Remplacez par votre numéro (format international sans +) :
+   adminNumber: "33612345678",
+
+   Exemple : +33 6 12 34 56 78 devient "33612345678"
+
+
+================================================================================
+FONCTIONNALITÉS ACTUELLEMENT ACTIVES
+================================================================================
+
+✅ Section "Rejoignez la Communauté JAF" sur la page d'accueil
+✅ Bouton pour rejoindre le groupe WhatsApp
+✅ Espace pour le QR code
+✅ Bouton flottant WhatsApp (sera activé après ajout du numéro)
+✅ Possibilité de partager sur WhatsApp
+
+
+================================================================================
+TESTER LA CONFIGURATION
+================================================================================
+
+1. Après avoir configuré le groupLink dans whatsapp-config.js
+2. Ouvrez index.html dans un navigateur
+3. Cliquez sur "Rejoindre le Groupe WhatsApp"
+4. → Cela devrait ouvrir WhatsApp avec votre groupe
+
+
+================================================================================
+GUIDE COMPLET
+================================================================================
+
+Pour des instructions détaillées sur :
+- Comment créer un compte WhatsApp Business
+- Comment gérer le groupe communautaire
+- Bonnes pratiques de modération
+- Règles du groupe à épingler
+
+→ Consultez : docs/WHATSAPP-SETUP.md
+
+
+================================================================================
+BESOIN D'AIDE ?
+================================================================================
+
+Si quelque chose ne fonctionne pas, vérifiez :
+1. Le lien du groupe est correct dans whatsapp-config.js
+2. Les fichiers whatsapp-config.js et whatsapp-widget.js sont bien présents
+3. La console du navigateur pour d'éventuelles erreurs (F12)
+
+
+================================================================================
+DERNIÈRE MISE À JOUR : 2025-01-19
+================================================================================

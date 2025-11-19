@@ -222,6 +222,33 @@
                 </div>
             </div>
         </section>
+        <!-- WhatsApp Community Section -->
+        <section class="whatsapp-section" role="region" aria-labelledby="whatsapp-heading">
+            <div class="container">
+                <h2 id="whatsapp-heading">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    Rejoignez la Communauté JAF
+                </h2>
+                <p>
+                    Échangez avec vos voisins, restez informé des événements
+                    et participez à la vie de votre résidence.
+                </p>
+
+                <!-- WhatsApp Group Button -->
+                <a href="#" class="whatsapp-btn" data-whatsapp-group>
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    Rejoindre le Groupe WhatsApp
+                </a>
+
+                <!-- QR Code -->
+                <div class="whatsapp-qr">
+                    <img src="whatsapp-qr.png" alt="QR Code Groupe WhatsApp JAF" loading="lazy">
+                    <p style="margin-top: 1rem; color: var(--gray-600);">
+                        Scannez pour rejoindre
+                    </p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Password Modal -->
@@ -390,5 +417,9 @@
         })();
     </script>
     <script src="nav.js"></script>
+
+    <!-- WhatsApp Integration -->
+    <script src="whatsapp-config.js"></script>
+    <script src="whatsapp-widget.js"></script>
 </body>
 </html>
