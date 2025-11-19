@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Le Jardin aux Fontaines - Une résidence d'exception avec quatre fontaines: Aux Devins, Aux Prophètes, Aux Songes et Aux Chimères.">
+    <meta name="keywords" content="JAF, Jardin aux Fontaines, résidence, fontaines, immobilier">
+    <meta name="author" content="Le Jardin aux Fontaines">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JAF.immo | Le Jardin aux Fontaines">
+    <meta property="og:description" content="Une résidence d'exception avec quatre fontaines magnifiques.">
+    <meta property="og:image" content="JAF.png">
+    <meta property="og:url" content="https://jaf.immo">
+
+    <title>JAF.immo | Le Jardin aux Fontaines</title>
+
+    <!-- Preconnect to external resources for better performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
+
+    <style>
+        /* Page-specific styles for index.html */
+        header {
+            position: fixed;
+            top: 0;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background-color: var(--light-color);
+            padding: 80px 0 40px;
+            background-size: auto 70%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        /* Fountain hotspots */
+        .fountain-hotspots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .hotspot {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .hotspot:hover {
+            transform: scale(1.2);
+        }
+
+        .hotspot::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            content: "\f043";
+            font-size: 24px;
+            color: #3498db;
+        }
+
+        .hotspot::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--dark-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .hotspot:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Custom fountain icons */
+        #hotspot1::before { content: "\f773"; }
+        #hotspot2::before { content: "\f72e"; }
+        #hotspot3::before { content: "\f54e"; }
+        #hotspot4::before { content: "\f6d5"; }
+        #hotspot5::before { content: "\f5e1"; }
+        #hotspot6::before { content: "\f1b9"; }
+        #hotspot7::before { content: "\f21e"; }
+
+        /* Hotspot positions */
+        #hotspot1 { top: 75%; left: 41%; }
+        #hotspot2 { top: 81%; left: 46%; }
+        #hotspot3 { top: 84%; left: 50%; }
+        #hotspot4 { top: 81%; left: 54%; }
+        #hotspot5 { top: 75%; left: 59%; }
+        #hotspot6 { top: 66%; left: 63%; }
+        #hotspot7 { top: 66%; left: 37%; }
+
+        /* Animations */
+        @keyframes fountain {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.1); }
+        }
+
+        /* Mobile responsive */
+        @media screen and (max-width: 768px) {
+            .hero {
+                background-size: 75% auto;
+                background-position: center 40%;
+                padding-top: 120px;
+            }
+
+            .hotspot::before {
+                font-size: 18px;
+            }
+
+            .hotspot::after {
+                display: none;
+            }
+
+            #hotspot1 { top: 70%; left: 41%; }
+            #hotspot2 { top: 76%; left: 46%; }
+            #hotspot3 { top: 79%; left: 50%; }
+            #hotspot4 { top: 76%; left: 54%; }
+            #hotspot5 { top: 70%; left: 59%; }
+            #hotspot6 { top: 66%; left: 63%; }
+            #hotspot7 { top: 66%; left: 37%; }
+        }
+
+        /* Portrait mobile */
+        @media screen and (max-width: 480px) and (orientation: portrait) {
+            .hero {
+                background-position: center 35%;
+                background-size: 100% auto;
+                padding-bottom: 60px;
+            }
+
+            .hotspot::before {
+                font-size: 16px;
+            }
+
+            #hotspot1 { top: 63%; left: 41%; }
+            #hotspot2 { top: 69%; left: 46%; }
+            #hotspot3 { top: 72%; left: 50%; }
+            #hotspot4 { top: 69%; left: 54%; }
+            #hotspot5 { top: 63%; left: 59%; }
+            #hotspot6 { top: 59%; left: 63%; }
+            #hotspot7 { top: 59%; left: 37%; }
+        }
+    </style>
+</head>
+<body>
+    <header role="banner">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo" aria-label="Retour à l'accueil">Le Jardin aux Fontaines</a>
+                <nav role="navigation" aria-label="Navigation principale">
+                    <ul>
+                        <li><a href="#" id="contact-link" aria-label="Accéder aux données JAF">JAF Data</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        <section class="hero" style="background: url('JAF.png') center/contain no-repeat; background-position: center 45%;" aria-label="Image du Jardin aux Fontaines">
+            <div class="container">
+                <div class="hero-content">
+                    <!-- Main content can be added here -->
+                </div>
+
+                <!-- Interactive fountain hotspots -->
+                <div class="fountain-hotspots" role="region" aria-label="Fontaines interactives">
+                    <div class="hotspot" id="hotspot1" data-tooltip="Fontaine des Songes" role="button" tabindex="0" aria-label="Fontaine des Songes"></div>
+                    <div class="hotspot" id="hotspot2" data-tooltip="Fontaine des Prophètes" role="button" tabindex="0" aria-label="Fontaine des Prophètes"></div>
+                    <div class="hotspot" id="hotspot3" data-tooltip="Fontaine des Devins" role="button" tabindex="0" aria-label="Fontaine des Devins"></div>
+                    <div class="hotspot" id="hotspot4" data-tooltip="Fontaine des Chimères" role="button" tabindex="0" aria-label="Fontaine des Chimères"></div>
+                    <div class="hotspot" id="hotspot5" data-tooltip="CSS des Parkings Extérieurs" role="button" tabindex="0" aria-label="CSS des Parkings Extérieurs"></div>
+                    <div class="hotspot" id="hotspot6" data-tooltip="CSS des Parkings Nazareth" role="button" tabindex="0" aria-label="CSS des Parkings Nazareth"></div>
+                    <div class="hotspot" id="hotspot7" data-tooltip="CSP" role="button" tabindex="0" aria-label="CSP"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Password Modal -->
+    <div class="modal" id="password-modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+        <div class="modal-content">
+            <button class="close-modal" aria-label="Fermer la fenêtre">&times;</button>
+            <h2 id="modal-title">Accès protégé</h2>
+            <p>Veuillez entrer le mot de passe pour accéder à JAF Data.</p>
+            <form id="password-form" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" autocomplete="current-password" aria-required="true" aria-describedby="password-error">
+                    <div class="error-message" id="password-error" role="alert">Mot de passe incorrect. Veuillez réessayer.</div>
+                </div>
+                <button type="submit" class="btn" id="submit-password">Accéder</button>
+            </form>
+        </div>
+    </div>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 Le Jardin aux Fontaines. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // Wait for DOM to be ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            function init() {
+                // Apply animations to fountain icons
+                const hotspots = document.querySelectorAll('.hotspot');
+
+                hotspots.forEach(hotspot => {
+                    const animationDuration = (Math.random() * 2) + 2;
+                    hotspot.style.animation = `fountain ${animationDuration}s infinite`;
+
+                    // Mobile tap event
+                    hotspot.addEventListener('touchstart', handleTouch);
+
+                    // Keyboard accessibility
+                    hotspot.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                });
+
+                // Random color variation
+                hotspots.forEach(hotspot => {
+                    const hue = Math.floor(Math.random() * 40) + 190;
+                    hotspot.style.color = `hsl(${hue}, 80%, 50%)`;
+                    hotspot.style.textShadow = `0 0 5px hsla(${hue}, 80%, 70%, 0.8)`;
+                });
+
+                // Password modal
+                setupPasswordModal();
+            }
+
+            function handleTouch(e) {
+                e.preventDefault();
+
+                const tooltip = document.createElement('div');
+                tooltip.textContent = this.getAttribute('data-tooltip');
+                Object.assign(tooltip.style, {
+                    position: 'absolute',
+                    backgroundColor: 'rgba(44, 62, 80, 0.9)',
+                    color: 'white',
+                    padding: '8px 15px',
+                    borderRadius: '5px',
+                    zIndex: '100',
+                    fontSize: '14px',
+                    top: '30px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    whiteSpace: 'nowrap'
+                });
+
+                document.querySelectorAll('.mobile-tooltip').forEach(t => t.remove());
+
+                tooltip.className = 'mobile-tooltip';
+                this.appendChild(tooltip);
+
+                setTimeout(() => tooltip.remove(), 2000);
+            }
+
+            function setupPasswordModal() {
+                const modal = document.getElementById('password-modal');
+                const contactLink = document.getElementById('contact-link');
+                const closeBtn = document.querySelector('.close-modal');
+                const passwordInput = document.getElementById('password');
+                const submitBtn = document.getElementById('submit-password');
+                const errorMsg = document.getElementById('password-error');
+
+                // Simple hash function for password verification
+                function hashCode(str) {
+                    let hash = 0;
+                    for (let i = 0; i < str.length; i++) {
+                        const char = str.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + char;
+                        hash = hash & hash;
+                    }
+                    return hash;
+                }
+
+                const EXPECTED_HASH = -1732802662; // Hash of 'jaf2025'
+
+                contactLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.style.display = 'flex';
+                    passwordInput.focus();
+                });
+
+                closeBtn.addEventListener('click', closeModal);
+
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    checkPassword();
+                });
+
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        checkPassword();
+                    }
+                });
+
+                window.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+
+                // Close modal on Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modal.style.display === 'flex') {
+                        closeModal();
+                    }
+                });
+
+                function checkPassword() {
+                    const password = passwordInput.value;
+                    if (hashCode(password) === EXPECTED_HASH) {
+                        window.location.href = 'contact.html';
+                    } else {
+                        errorMsg.style.display = 'block';
+                        passwordInput.setAttribute('aria-invalid', 'true');
+                    }
+                }
+
+                function closeModal() {
+                    modal.style.display = 'none';
+                    errorMsg.style.display = 'none';
+                    passwordInput.value = '';
+                    passwordInput.removeAttribute('aria-invalid');
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
