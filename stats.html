@@ -694,46 +694,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Password protection
-            document.getElementById('contact-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('password-modal').style.display = 'flex';
-            });
-            
-            // Close modal
-            document.querySelector('.close-modal').addEventListener('click', function() {
-                document.getElementById('password-modal').style.display = 'none';
-                document.getElementById('password-error').style.display = 'none';
-                document.getElementById('password').value = '';
-            });
-            
-            // Password check
-            document.getElementById('submit-password').addEventListener('click', function() {
-                const password = document.getElementById('password').value;
-                // Simple password: jaf2025
-                if(password === 'jaf2025') {
-                    window.location.href = 'contact.html';
-                } else {
-                    document.getElementById('password-error').style.display = 'block';
-                }
-            });
-            
-            // Allow Enter key to submit password
-            document.getElementById('password').addEventListener('keypress', function(e) {
-                if(e.key === 'Enter') {
-                    document.getElementById('submit-password').click();
-                }
-            });
-            
-            // Close modal if clicked outside
-            window.addEventListener('click', function(e) {
-                if(e.target === document.getElementById('password-modal')) {
-                    document.getElementById('password-modal').style.display = 'none';
-                    document.getElementById('password-error').style.display = 'none';
-                    document.getElementById('password').value = '';
-                }
-            });
-            
             // Chart.js implementation
             // Data
             const propertyData = [

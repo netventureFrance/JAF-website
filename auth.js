@@ -17,7 +17,7 @@
         return hash;
     }
 
-    const EXPECTED_HASH = -1732802662; // Hash of 'jaf2025'
+    const EXPECTED_HASH = -1836093552; // Hash of 'jaf2025'
 
     function initPasswordModal() {
         const modal = document.getElementById('password-modal');
