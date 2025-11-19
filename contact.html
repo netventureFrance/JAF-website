@@ -48,10 +48,21 @@
     <header role="banner">
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo" aria-label="Retour à l'accueil">Le Jardin aux Fontaines</a>
+                <a href="index.html" class="logo" aria-label="Retour à l'accueil">
+                    <i class="fas fa-fountain" aria-hidden="true"></i>
+                    Le Jardin aux Fontaines
+                </a>
+                <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <nav role="navigation" aria-label="Navigation principale">
                     <ul>
-                        <li><a href="contact.html" aria-current="page">JAF Data</a></li>
+                        <li><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i> Accueil</a></li>
+                        <li><a href="contact.html" aria-current="page"><i class="fas fa-database" aria-hidden="true"></i> JAF Data</a></li>
+                        <li><a href="quiz.html"><i class="fas fa-question-circle" aria-hidden="true"></i> Quiz</a></li>
+                        <li><a href="stats.html"><i class="fas fa-chart-bar" aria-hidden="true"></i> Statistiques</a></li>
                     </ul>
                 </nav>
             </div>
@@ -82,12 +93,7 @@
         </div>
     </footer>
 
-    <script>
-        // Check if this page was accessed directly without password authentication
-        if (!document.referrer.includes('index.html')) {
-            // Redirect to the home page
-            window.location.href = 'index.html';
-        }
-    </script>
+    <script src="nav.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>
