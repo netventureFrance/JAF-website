@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .chart-container {
+            height: 400px;
+            margin: 20px 0;
+            border: 2px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Chart.js</h1>
+    <p id="status">Vérification...</p>
+
+    <div class="chart-container">
+        <canvas id="testChart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const status = document.getElementById('status');
+
+            if (typeof Chart === 'undefined') {
+                status.textContent = '❌ Chart.js non chargé!';
+                status.style.color = 'red';
+                return;
+            }
+
+            status.textContent = '✅ Chart.js chargé! Version: ' + Chart.version;
+            status.style.color = 'green';
+
+            const ctx = document.getElementById('testChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Devins', 'Prophètes', 'Songes', 'Chimères'],
+                    datasets: [{
+                        label: 'Test Data',
+                        data: [49, 19, 31, 66],
+                        backgroundColor: 'rgba(37, 99, 235, 0.8)'
+                    }]
+                }
+            });
+
+            console.log('Chart créé avec succès!');
+        });
+    </script>
+</body>
+</html>
