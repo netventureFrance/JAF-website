@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" id="jaf-interactive-map">
+  <defs>
+    <style>
+      .building {
+        fill: #d4a373;
+        stroke: #8b6f47;
+        stroke-width: 2;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .building:hover {
+        fill: #e6b885;
+        stroke: #6b5437;
+        stroke-width: 3;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      }
+      .street {
+        fill: #b0b0b0;
+        stroke: #808080;
+        stroke-width: 1;
+      }
+      .green-space {
+        fill: #7db67d;
+        opacity: 0.6;
+      }
+      .parking {
+        fill: #c0c0c0;
+        stroke: #909090;
+        stroke-width: 1;
+      }
+      .label {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        fill: #2c3e50;
+        font-weight: bold;
+        pointer-events: none;
+        text-anchor: middle;
+      }
+      .street-label {
+        font-size: 10px;
+        fill: #5a5a5a;
+        font-style: italic;
+      }
+      .tooltip-text {
+        font-size: 14px;
+        fill: white;
+        font-weight: normal;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5dc"/>
+
+  <!-- Streets -->
+  <path class="street" d="M 0,80 L 800,80 L 800,110 L 0,110 Z"/>
+  <text x="400" y="100" class="label street-label">Rés le Jardin aux Fontaines</text>
+
+  <path class="street" d="M 0,520 L 800,520 L 800,550 L 0,550 Z"/>
+  <text x="400" y="540" class="label street-label">Rue de Nazareth</text>
+
+  <path class="street" d="M 30,80 L 60,80 L 60,600 L 30,600 Z"/>
+  <text x="45" y="300" class="label street-label" transform="rotate(-90, 45, 300)">Rue du Pioch de Boutonnet</text>
+
+  <path class="street" d="M 700,80 L 730,80 L 730,600 L 700,600 Z"/>
+  <text x="715" y="300" class="label street-label" transform="rotate(90, 715, 300)">Rés le Jardin aux Fontaines</text>
+
+  <!-- Green spaces -->
+  <ellipse class="green-space" cx="180" cy="200" rx="60" ry="50"/>
+  <ellipse class="green-space" cx="620" cy="200" rx="60" ry="50"/>
+  <ellipse class="green-space" cx="400" cy="320" rx="80" ry="60"/>
+
+  <!-- Parking areas -->
+  <rect class="parking" x="550" y="400" width="120" height="80" rx="5"/>
+  <text x="610" y="445" class="label" style="font-size: 10px;">Parking</text>
+
+  <!-- Building B1 (Left building) -->
+  <g id="building-b1" class="building-group" data-building="b1">
+    <rect class="building" x="100" y="350" width="140" height="120" rx="3"/>
+    <text x="170" y="415" class="label">Bâtiment B1</text>
+  </g>
+
+  <!-- Building B2 (Top left) -->
+  <g id="building-b2" class="building-group" data-building="b2">
+    <rect class="building" x="120" y="140" width="120" height="100" rx="3"/>
+    <text x="180" y="195" class="label">Bâtiment B2</text>
+  </g>
+
+  <!-- Building B3 (Center top) -->
+  <g id="building-b3" class="building-group" data-building="b3">
+    <rect class="building" x="310" y="140" width="180" height="100" rx="3"/>
+    <text x="400" y="195" class="label">Bâtiment B3</text>
+  </g>
+
+  <!-- Building B4 (Top right) -->
+  <g id="building-b4" class="building-group" data-building="b4">
+    <rect class="building" x="560" y="140" width="120" height="100" rx="3"/>
+    <text x="620" y="195" class="label">Bâtiment B4</text>
+  </g>
+
+  <!-- Building B5 (Center) -->
+  <g id="building-b5" class="building-group" data-building="b5">
+    <rect class="building" x="320" y="280" width="160" height="110" rx="3"/>
+    <text x="400" y="340" class="label">Bâtiment B5</text>
+  </g>
+
+  <!-- Building B6 (Right) -->
+  <g id="building-b6" class="building-group" data-building="b6">
+    <rect class="building" x="550" y="280" width="120" height="90" rx="3"/>
+    <text x="610" y="330" class="label">Bâtiment B6</text>
+  </g>
+
+  <!-- Building B7 (Bottom center) -->
+  <g id="building-b7" class="building-group" data-building="b7">
+    <rect class="building" x="300" y="420" width="200" height="80" rx="3"/>
+    <text x="400" y="465" class="label">Bâtiment B7</text>
+  </g>
+</svg>

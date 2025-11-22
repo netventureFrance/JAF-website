@@ -37,144 +37,71 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: white;
-            background-color: var(--light-color);
-            padding: 80px 0 40px;
-            background-size: auto 70%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 100px 20px 40px;
             position: relative;
         }
 
         .hero-content {
-            max-width: 800px;
-        }
-
-        /* Fountain hotspots */
-        .fountain-hotspots {
-            position: absolute;
+            max-width: 1200px;
             width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
         }
 
-        .hotspot {
-            position: absolute;
-            border-radius: 50%;
-            cursor: pointer;
-            pointer-events: auto;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .hotspot:hover {
-            transform: scale(1.2);
-        }
-
-        .hotspot::before {
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            content: "\f043";
-            font-size: 24px;
-            color: #3498db;
-        }
-
-        .hotspot::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--dark-color);
+        .hero-content h1 {
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 10;
-            font-size: 0.9rem;
-            pointer-events: none;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .hotspot:hover::after {
-            opacity: 1;
-            visibility: visible;
+        .hero-content p {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
-        /* Custom fountain icons */
-        #hotspot1::before { content: "\f773"; }
-        #hotspot2::before { content: "\f72e"; }
-        #hotspot3::before { content: "\f54e"; }
-        #hotspot4::before { content: "\f6d5"; }
-        #hotspot5::before { content: "\f5e1"; }
-        #hotspot6::before { content: "\f1b9"; }
-        #hotspot7::before { content: "\f21e"; }
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin: 0 auto;
+            max-width: 900px;
+        }
 
-        /* Hotspot positions */
-        #hotspot1 { top: 75%; left: 41%; }
-        #hotspot2 { top: 81%; left: 46%; }
-        #hotspot3 { top: 84%; left: 50%; }
-        #hotspot4 { top: 81%; left: 54%; }
-        #hotspot5 { top: 75%; left: 59%; }
-        #hotspot6 { top: 66%; left: 63%; }
-        #hotspot7 { top: 66%; left: 37%; }
+        #jaf-interactive-map {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-        /* Animations */
-        @keyframes fountain {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-3px) scale(1.1); }
+        .building-group {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .building-group:hover .building {
+            filter: brightness(1.2);
         }
 
         /* Mobile responsive */
         @media screen and (max-width: 768px) {
             .hero {
-                background-size: 75% auto;
-                background-position: center 40%;
-                padding-top: 120px;
+                padding-top: 100px;
             }
 
-            .hotspot::before {
-                font-size: 18px;
+            .hero-content h1 {
+                font-size: 1.8rem;
             }
 
-            .hotspot::after {
-                display: none;
+            .hero-content p {
+                font-size: 1rem;
             }
 
-            #hotspot1 { top: 70%; left: 41%; }
-            #hotspot2 { top: 76%; left: 46%; }
-            #hotspot3 { top: 79%; left: 50%; }
-            #hotspot4 { top: 76%; left: 54%; }
-            #hotspot5 { top: 70%; left: 59%; }
-            #hotspot6 { top: 66%; left: 63%; }
-            #hotspot7 { top: 66%; left: 37%; }
-        }
-
-        /* Portrait mobile */
-        @media screen and (max-width: 480px) and (orientation: portrait) {
-            .hero {
-                background-position: center 35%;
-                background-size: 100% auto;
-                padding-bottom: 60px;
+            .map-container {
+                padding: 1rem;
             }
-
-            .hotspot::before {
-                font-size: 16px;
-            }
-
-            #hotspot1 { top: 63%; left: 41%; }
-            #hotspot2 { top: 69%; left: 46%; }
-            #hotspot3 { top: 72%; left: 50%; }
-            #hotspot4 { top: 69%; left: 54%; }
-            #hotspot5 { top: 63%; left: 59%; }
-            #hotspot6 { top: 59%; left: 63%; }
-            #hotspot7 { top: 59%; left: 37%; }
         }
     </style>
 </head>
@@ -204,21 +131,15 @@
     </header>
 
     <main role="main">
-        <section class="hero" style="background: url('JAF.png') center/contain no-repeat; background-position: center 45%;" aria-label="Image du Jardin aux Fontaines">
-            <div class="container">
-                <div class="hero-content">
-                    <!-- Main content can be added here -->
-                </div>
+        <section class="hero" aria-label="Carte interactive du Jardin aux Fontaines">
+            <div class="hero-content">
+                <h1><i class="fas fa-map-marked-alt"></i> Le Jardin aux Fontaines</h1>
+                <p>Cliquez sur un bâtiment pour voir ses détails</p>
 
-                <!-- Interactive fountain hotspots -->
-                <div class="fountain-hotspots" role="region" aria-label="Fontaines interactives">
-                    <div class="hotspot" id="hotspot1" data-tooltip="Fontaine des Songes" role="button" tabindex="0" aria-label="Fontaine des Songes"></div>
-                    <div class="hotspot" id="hotspot2" data-tooltip="Fontaine des Prophètes" role="button" tabindex="0" aria-label="Fontaine des Prophètes"></div>
-                    <div class="hotspot" id="hotspot3" data-tooltip="Fontaine des Devins" role="button" tabindex="0" aria-label="Fontaine des Devins"></div>
-                    <div class="hotspot" id="hotspot4" data-tooltip="Fontaine des Chimères" role="button" tabindex="0" aria-label="Fontaine des Chimères"></div>
-                    <div class="hotspot" id="hotspot5" data-tooltip="CSS des Parkings Extérieurs" role="button" tabindex="0" aria-label="CSS des Parkings Extérieurs"></div>
-                    <div class="hotspot" id="hotspot6" data-tooltip="CSS des Parkings Nazareth" role="button" tabindex="0" aria-label="CSS des Parkings Nazareth"></div>
-                    <div class="hotspot" id="hotspot7" data-tooltip="CSP" role="button" tabindex="0" aria-label="CSP"></div>
+                <div class="map-container">
+                    <object data="jaf-map.svg" type="image/svg+xml" id="jaf-map-object" style="width: 100%; height: auto;">
+                        Votre navigateur ne supporte pas les SVG
+                    </object>
                 </div>
             </div>
         </section>
@@ -286,61 +207,47 @@
             }
 
             function init() {
-                // Apply animations to fountain icons
-                const hotspots = document.querySelectorAll('.hotspot');
-
-                hotspots.forEach(hotspot => {
-                    const animationDuration = (Math.random() * 2) + 2;
-                    hotspot.style.animation = `fountain ${animationDuration}s infinite`;
-
-                    // Mobile tap event
-                    hotspot.addEventListener('touchstart', handleTouch);
-
-                    // Keyboard accessibility
-                    hotspot.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            this.click();
-                        }
-                    });
-                });
-
-                // Random color variation
-                hotspots.forEach(hotspot => {
-                    const hue = Math.floor(Math.random() * 40) + 190;
-                    hotspot.style.color = `hsl(${hue}, 80%, 50%)`;
-                    hotspot.style.textShadow = `0 0 5px hsla(${hue}, 80%, 70%, 0.8)`;
-                });
+                // Setup interactive map
+                setupInteractiveMap();
 
                 // Password modal
                 setupPasswordModal();
             }
 
-            function handleTouch(e) {
-                e.preventDefault();
+            function setupInteractiveMap() {
+                const mapObject = document.getElementById('jaf-map-object');
 
-                const tooltip = document.createElement('div');
-                tooltip.textContent = this.getAttribute('data-tooltip');
-                Object.assign(tooltip.style, {
-                    position: 'absolute',
-                    backgroundColor: 'rgba(44, 62, 80, 0.9)',
-                    color: 'white',
-                    padding: '8px 15px',
-                    borderRadius: '5px',
-                    zIndex: '100',
-                    fontSize: '14px',
-                    top: '30px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    whiteSpace: 'nowrap'
+                mapObject.addEventListener('load', function() {
+                    const svgDoc = mapObject.contentDocument;
+                    if (!svgDoc) return;
+
+                    const buildings = svgDoc.querySelectorAll('.building-group');
+
+                    buildings.forEach(building => {
+                        building.style.cursor = 'pointer';
+
+                        building.addEventListener('click', function() {
+                            const buildingId = this.getAttribute('data-building');
+                            if (buildingId) {
+                                window.location.href = `buildings/${buildingId}.html`;
+                            }
+                        });
+
+                        building.addEventListener('mouseenter', function() {
+                            const rect = this.querySelector('.building');
+                            if (rect) {
+                                rect.style.filter = 'brightness(1.2)';
+                            }
+                        });
+
+                        building.addEventListener('mouseleave', function() {
+                            const rect = this.querySelector('.building');
+                            if (rect) {
+                                rect.style.filter = '';
+                            }
+                        });
+                    });
                 });
-
-                document.querySelectorAll('.mobile-tooltip').forEach(t => t.remove());
-
-                tooltip.className = 'mobile-tooltip';
-                this.appendChild(tooltip);
-
-                setTimeout(() => tooltip.remove(), 2000);
             }
 
             function setupPasswordModal() {
