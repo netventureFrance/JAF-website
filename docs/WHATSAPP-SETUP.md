@@ -144,7 +144,7 @@ Sur n'importe quelle page, ajoutez:
     class="share-button"
     data-whatsapp-share
     data-share-text="Découvrez le Jardin aux Fontaines"
-    data-share-url="https://jaf-website.netlify.app">
+    data-share-url="https://jaf.immo">
     <i class="fab fa-whatsapp"></i>
     Partager sur WhatsApp
 </button>
