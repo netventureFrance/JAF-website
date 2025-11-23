@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAF Building Overlay Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #2c3e50;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .viewer-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        #top-view-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #overlay-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .building-overlay {
+            stroke-width: 8;
+            filter: url(#glass-effect);
+            pointer-events: all;
+        }
+
+        .building-overlay:hover {
+            stroke-width: 10;
+        }
+
+        .building-a {
+            fill: url(#glass-gradient);
+            stroke: #3498db;
+        }
+
+        .building-b1 {
+            fill: url(#glass-gradient-b1);
+            stroke: #27ae60;
+        }
+
+        .building-orange {
+            fill: url(#glass-gradient-orange);
+            stroke: #e67e22;
+        }
+
+        .building-red {
+            fill: url(#glass-gradient-red);
+            stroke: #e74c3c;
+        }
+
+        .corner-handle {
+            fill: #ff0000;
+            stroke: white;
+            stroke-width: 2;
+            cursor: grab;
+            pointer-events: all;
+        }
+
+        .corner-handle:hover {
+            fill: #ff6600;
+            r: 8;
+        }
+
+        .corner-handle:active {
+            cursor: grabbing;
+        }
+
+        .building-label {
+            fill: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .controls {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 5px;
+        }
+
+        .info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JAF Building Overlay Viewer</h1>
+
+        <div class="viewer-wrapper">
+            <img id="top-view-image" src="images/Top.png" alt="JAF Top View">
+            <svg id="overlay-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <!-- Glass gradient effect for A -->
+                    <linearGradient id="glass-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:rgba(52, 152, 219, 0.7);stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:rgba(52, 152, 219, 0.5);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(52, 152, 219, 0.7);stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Glass gradient effect for B1 (Green) -->
+                    <linearGradient id="glass-gradient-b1" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:rgba(46, 204, 113, 0.7);stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:rgba(46, 204, 113, 0.5);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(46, 204, 113, 0.7);stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Glass gradient effect for Orange buildings (D, E) -->
+                    <linearGradient id="glass-gradient-orange" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:rgba(230, 126, 34, 0.7);stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:rgba(230, 126, 34, 0.5);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(230, 126, 34, 0.7);stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Glass gradient effect for Red buildings (F, G, H) -->
+                    <linearGradient id="glass-gradient-red" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:rgba(231, 76, 60, 0.7);stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:rgba(231, 76, 60, 0.5);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(231, 76, 60, 0.7);stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Glass blur effect -->
+                    <filter id="glass-effect">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                        <feOffset dx="0" dy="2" result="offsetblur"/>
+                        <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3"/>
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Bloc A (Saved) -->
+                <polygon
+                    id="building-polygon"
+                    class="building-overlay building-a"
+                    points="273,494 350,498 325,869 246,863"
+                    data-building="bloc-a"
+                />
+
+                <!-- A1, A2, A3 labels parallel to longest sides -->
+                <text x="298" y="555" class="building-label" transform="rotate(-4, 298, 555)">A1</text>
+                <text x="298" y="681" class="building-label" transform="rotate(-4, 298, 681)">A2</text>
+                <text x="298" y="807" class="building-label" transform="rotate(-4, 298, 807)">A3</text>
+
+                <!-- B1/B2 Square (SAVED - Green) -->
+                <polygon
+                    id="building-b"
+                    class="building-overlay building-b1"
+                    points="498,841 807,841 810,915 497,917"
+                    data-building="b"
+                />
+                <!-- B1 and B2 labels (horizontal) -->
+                <text x="580" y="885" class="building-label">B1</text>
+                <text x="720" y="885" class="building-label">B2</text>
+
+                <!-- C Square (SAVED - Green) -->
+                <polygon
+                    id="building-c"
+                    class="building-overlay building-b1"
+                    points="791,722 860,722 858,851 789,852"
+                    data-building="c"
+                />
+                <text x="824" y="792" class="building-label">C</text>
+
+                <!-- D Square (SAVED - Orange) -->
+                <polygon
+                    id="building-d"
+                    class="building-overlay building-orange"
+                    points="788,459 861,459 864,592 789,592"
+                    data-building="d"
+                />
+                <text x="825" y="532" class="building-label">D</text>
+
+                <!-- E1/E2/E3 Square (SAVED - Orange) -->
+                <polygon
+                    id="building-e"
+                    class="building-overlay building-orange"
+                    points="491,386 806,386 805,459 492,457"
+                    data-building="e"
+                />
+                <!-- E1, E2, E3 labels (horizontal) -->
+                <text x="740" y="428" class="building-label">E1</text>
+                <text x="650" y="428" class="building-label">E2</text>
+                <text x="560" y="428" class="building-label">E3</text>
+
+                <!-- F1/F2 Square (SAVED - Red) -->
+                <polygon
+                    id="building-f"
+                    class="building-overlay building-red"
+                    points="486,272 510,93 580,101 555,281"
+                    data-building="f"
+                />
+                <!-- F1 and F2 labels (vertical) -->
+                <text x="520" y="233" class="building-label">F1</text>
+                <text x="540" y="140" class="building-label">F2</text>
+
+                <!-- G1/G2 Square (SAVED - Red) -->
+                <polygon
+                    id="building-g"
+                    class="building-overlay building-red"
+                    points="128,-16 554,38 545,114 119,53"
+                    data-building="g"
+                />
+                <!-- G1 and G2 labels (horizontal) -->
+                <text x="453" y="62" class="building-label">G1</text>
+                <text x="220" y="33" class="building-label">G2</text>
+
+                <!-- H1/H2 Square (SAVED - Red) -->
+                <polygon
+                    id="building-h"
+                    class="building-overlay building-red"
+                    points="93,37 164,48 142,225 69,216"
+                    data-building="h"
+                />
+                <!-- H1 and H2 labels (vertical) -->
+                <text x="128" y="87" class="building-label">H1</text>
+                <text x="105" y="176" class="building-label">H2</text>
+            </svg>
+        </div>
+
+        <div class="controls">
+            <h3>All Building Coordinates - Saved</h3>
+
+            <div style="margin-top: 15px;">
+                <div style="background: #3498db; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>A1, A2, A3 (Blue) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">273,494 350,498 325,869 246,863</span>
+                </div>
+
+                <div style="background: #27ae60; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>B1/B2 (Green) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">498,841 807,841 810,915 497,917</span>
+                </div>
+
+                <div style="background: #27ae60; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>C (Green) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">791,722 860,722 858,851 789,852</span>
+                </div>
+
+                <div style="background: #e67e22; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>D (Orange) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">788,459 861,459 864,592 789,592</span>
+                </div>
+
+                <div style="background: #e67e22; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>E1/E2/E3 (Orange) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">491,386 806,386 805,459 492,457</span>
+                </div>
+
+                <div style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>F1/F2 (Red) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">486,272 510,93 580,101 555,281</span>
+                </div>
+
+                <div style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>G1/G2 (Red) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">128,-16 554,38 545,114 119,53</span>
+                </div>
+
+                <div style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px;">
+                    <strong>H1/H2 (Red) - SAVED:</strong><br>
+                    <span style="font-family: monospace; font-size: 11px;">93,37 164,48 142,225 69,216</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info">
+            <strong>✓ All Buildings Completed!</strong>
+            <ul style="margin-left: 20px; margin-top: 5px;">
+                <li><strong>A1, A2, A3</strong> (Blue)</li>
+                <li><strong>B1/B2</strong> (Green)</li>
+                <li><strong>C</strong> (Green)</li>
+                <li><strong>D</strong> (Orange)</li>
+                <li><strong>E1/E2/E3</strong> (Orange)</li>
+                <li><strong>F1/F2</strong> (Red)</li>
+                <li><strong>G1/G2</strong> (Red)</li>
+                <li><strong>H1/H2</strong> (Red)</li>
+            </ul>
+            <p style="margin-top: 15px; padding: 10px; background: #2ecc71; color: white; border-radius: 5px; font-weight: bold;">
+                All JAF building overlays have been positioned and saved!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // All JAF building overlays completed and saved!
+        // A1/A2/A3 (Blue), B1/B2 (Green), C (Green), D (Orange), E1/E2/E3 (Orange)
+        // F1/F2 (Red), G1/G2 (Red), H1/H2 (Red)
+    </script>
+</body>
+</html>

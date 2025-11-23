@@ -70,19 +70,68 @@
             max-width: 900px;
         }
 
-        #jaf-interactive-map {
+        .viewer-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        #top-view-image {
             width: 100%;
             height: auto;
             display: block;
+            border-radius: 10px;
         }
 
-        .building-group {
+        #overlay-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .building-overlay {
+            stroke-width: 8;
+            filter: url(#glass-effect);
+            pointer-events: all;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .building-group:hover .building {
-            filter: brightness(1.2);
+        .building-overlay:hover {
+            stroke-width: 10;
+            filter: url(#glass-effect) brightness(1.2);
+        }
+
+        .building-a {
+            fill: url(#glass-gradient);
+            stroke: #3498db;
+        }
+
+        .building-b1 {
+            fill: url(#glass-gradient-b1);
+            stroke: #27ae60;
+        }
+
+        .building-orange {
+            fill: url(#glass-gradient-orange);
+            stroke: #e67e22;
+        }
+
+        .building-red {
+            fill: url(#glass-gradient-red);
+            stroke: #e74c3c;
+        }
+
+        .building-label {
+            fill: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-anchor: middle;
+            pointer-events: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
         /* Mobile responsive */
@@ -137,9 +186,93 @@
                 <p>Cliquez sur un bâtiment pour voir ses détails</p>
 
                 <div class="map-container">
-                    <object data="jaf-map.svg" type="image/svg+xml" id="jaf-map-object" style="width: 100%; height: auto;">
-                        Votre navigateur ne supporte pas les SVG
-                    </object>
+                    <div class="viewer-wrapper">
+                        <img id="top-view-image" src="images/Top.png" alt="JAF Top View">
+                        <svg id="overlay-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <!-- Glass gradient effect for A -->
+                                <linearGradient id="glass-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:rgba(52, 152, 219, 0.7);stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:rgba(52, 152, 219, 0.5);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:rgba(52, 152, 219, 0.7);stop-opacity:1" />
+                                </linearGradient>
+
+                                <!-- Glass gradient effect for B1 (Green) -->
+                                <linearGradient id="glass-gradient-b1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:rgba(46, 204, 113, 0.7);stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:rgba(46, 204, 113, 0.5);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:rgba(46, 204, 113, 0.7);stop-opacity:1" />
+                                </linearGradient>
+
+                                <!-- Glass gradient effect for Orange buildings (D, E) -->
+                                <linearGradient id="glass-gradient-orange" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:rgba(230, 126, 34, 0.7);stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:rgba(230, 126, 34, 0.5);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:rgba(230, 126, 34, 0.7);stop-opacity:1" />
+                                </linearGradient>
+
+                                <!-- Glass gradient effect for Red buildings (F, G, H) -->
+                                <linearGradient id="glass-gradient-red" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:rgba(231, 76, 60, 0.7);stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:rgba(231, 76, 60, 0.5);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:rgba(231, 76, 60, 0.7);stop-opacity:1" />
+                                </linearGradient>
+
+                                <!-- Glass blur effect -->
+                                <filter id="glass-effect">
+                                    <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                                    <feOffset dx="0" dy="2" result="offsetblur"/>
+                                    <feComponentTransfer>
+                                        <feFuncA type="linear" slope="0.3"/>
+                                    </feComponentTransfer>
+                                    <feMerge>
+                                        <feMergeNode/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Building A (A1/A2/A3) -->
+                            <polygon class="building-overlay building-a" points="273,494 350,498 325,869 246,863" data-building="a1" />
+                            <text x="298" y="555" class="building-label" transform="rotate(-4, 298, 555)">A1</text>
+                            <text x="298" y="681" class="building-label" transform="rotate(-4, 298, 681)">A2</text>
+                            <text x="298" y="807" class="building-label" transform="rotate(-4, 298, 807)">A3</text>
+
+                            <!-- Building B (B1/B2) -->
+                            <polygon class="building-overlay building-b1" points="498,841 807,841 810,915 497,917" data-building="b1" />
+                            <text x="580" y="885" class="building-label">B1</text>
+                            <text x="720" y="885" class="building-label">B2</text>
+
+                            <!-- Building C -->
+                            <polygon class="building-overlay building-b1" points="791,722 860,722 858,851 789,852" data-building="c" />
+                            <text x="824" y="792" class="building-label">C</text>
+
+                            <!-- Building D -->
+                            <polygon class="building-overlay building-orange" points="788,459 861,459 864,592 789,592" data-building="d" />
+                            <text x="825" y="532" class="building-label">D</text>
+
+                            <!-- Building E (E1/E2/E3) -->
+                            <polygon class="building-overlay building-orange" points="491,386 806,386 805,459 492,457" data-building="e1" />
+                            <text x="740" y="428" class="building-label">E1</text>
+                            <text x="650" y="428" class="building-label">E2</text>
+                            <text x="560" y="428" class="building-label">E3</text>
+
+                            <!-- Building F (F1/F2) -->
+                            <polygon class="building-overlay building-red" points="486,272 510,93 580,101 555,281" data-building="f1" />
+                            <text x="520" y="233" class="building-label">F1</text>
+                            <text x="540" y="140" class="building-label">F2</text>
+
+                            <!-- Building G (G1/G2) -->
+                            <polygon class="building-overlay building-red" points="128,-16 554,38 545,114 119,53" data-building="g1" />
+                            <text x="453" y="62" class="building-label">G1</text>
+                            <text x="220" y="33" class="building-label">G2</text>
+
+                            <!-- Building H (H1/H2) -->
+                            <polygon class="building-overlay building-red" points="93,37 164,48 142,225 69,216" data-building="h1" />
+                            <text x="128" y="87" class="building-label">H1</text>
+                            <text x="105" y="176" class="building-label">H2</text>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </section>
@@ -215,37 +348,14 @@
             }
 
             function setupInteractiveMap() {
-                const mapObject = document.getElementById('jaf-map-object');
+                const buildings = document.querySelectorAll('.building-overlay');
 
-                mapObject.addEventListener('load', function() {
-                    const svgDoc = mapObject.contentDocument;
-                    if (!svgDoc) return;
-
-                    const buildings = svgDoc.querySelectorAll('.building-group');
-
-                    buildings.forEach(building => {
-                        building.style.cursor = 'pointer';
-
-                        building.addEventListener('click', function() {
-                            const buildingId = this.getAttribute('data-building');
-                            if (buildingId) {
-                                window.location.href = `buildings/${buildingId}.html`;
-                            }
-                        });
-
-                        building.addEventListener('mouseenter', function() {
-                            const rect = this.querySelector('.building');
-                            if (rect) {
-                                rect.style.filter = 'brightness(1.2)';
-                            }
-                        });
-
-                        building.addEventListener('mouseleave', function() {
-                            const rect = this.querySelector('.building');
-                            if (rect) {
-                                rect.style.filter = '';
-                            }
-                        });
+                buildings.forEach(building => {
+                    building.addEventListener('click', function() {
+                        const buildingId = this.getAttribute('data-building');
+                        if (buildingId) {
+                            window.location.href = `buildings/${buildingId}.html`;
+                        }
                     });
                 });
             }
