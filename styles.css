@@ -54,7 +54,8 @@ header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow-sm);
-    padding: 1rem 0;
+    padding: 1.5rem 0;
+    margin-bottom: 1rem;
     width: 100%;
     z-index: 100;
     position: sticky;
@@ -110,7 +111,7 @@ nav ul li a {
     border-radius: var(--radius);
     transition: var(--transition);
     position: relative;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
 }
 
 nav ul li a:hover {
