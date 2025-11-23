@@ -70,11 +70,14 @@ header {
 
 .header-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .logo {
+    position: absolute;
+    left: 0;
     font-size: 1.5rem;
     font-weight: 700;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
