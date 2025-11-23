@@ -376,12 +376,12 @@
                         <div class="weather-description" id="current-desc">Chargement...</div>
                         <div class="weather-details">
                             <div class="weather-detail-item">
-                                <i class="fas fa-temperature-high"></i>
-                                <span id="temp-max">--°C</span>
-                            </div>
-                            <div class="weather-detail-item">
                                 <i class="fas fa-temperature-low"></i>
                                 <span id="temp-min">--°C</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <i class="fas fa-temperature-high"></i>
+                                <span id="temp-max">--°C</span>
                             </div>
                             <div class="weather-detail-item">
                                 <i class="fas fa-sunrise"></i>
@@ -391,6 +391,10 @@
                                 <i class="fas fa-sunset"></i>
                                 <span id="sunset">--:--</span>
                             </div>
+                        </div>
+                        <div style="margin-top: 0.75rem; font-size: 0.95rem; opacity: 0.9;">
+                            <i class="fas fa-calendar-day"></i>
+                            <span id="saint-day">Bonne fête !</span>
                         </div>
                     </div>
                 </div>
@@ -686,7 +690,11 @@
     <!-- Weather Widget Script -->
     <script>
         // Weather widget functionality
-        const WEATHER_API_KEY = 'YOUR_API_KEY'; // You'll need to get a free API key from openweathermap.org
+        // DATA SOURCE: OpenWeatherMap API (https://openweathermap.org)
+        // UPDATE FREQUENCY: Every 30 minutes when API key is configured
+        // CURRENT STATUS: Showing sample data (no API key configured)
+        // TO ACTIVATE: Get a free API key from openweathermap.org and replace 'YOUR_API_KEY' below
+        const WEATHER_API_KEY = 'YOUR_API_KEY';
         const CITY = 'Montpellier';
         const COUNTRY = 'FR';
 
@@ -714,6 +722,35 @@
 
         // Day names in French
         const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+
+        // Saint days calendar (selected saints for each month/day)
+        const saints = {
+            '1-1': 'Marie', '1-15': 'Rémi', '1-21': 'Agnès', '1-24': 'François',
+            '2-3': 'Blaise', '2-14': 'Valentin', '2-22': 'Isabelle',
+            '3-8': 'Jean', '3-17': 'Patrice', '3-19': 'Joseph', '3-25': 'Annonciation',
+            '4-23': 'Georges', '4-29': 'Catherine',
+            '5-1': 'Fête du Travail', '5-15': 'Denise', '5-30': 'Ferdinand',
+            '6-13': 'Antoine', '6-21': 'Été', '6-24': 'Jean-Baptiste', '6-29': 'Pierre et Paul',
+            '7-14': 'Fête Nationale', '7-22': 'Marie-Madeleine', '7-26': 'Anne',
+            '8-10': 'Laurent', '8-15': 'Assomption', '8-28': 'Augustin',
+            '9-21': 'Matthieu', '9-29': 'Michel',
+            '10-4': 'François', '10-18': 'Luc', '10-28': 'Simon',
+            '11-1': 'Toussaint', '11-11': 'Martin', '11-23': 'Clément', '11-25': 'Catherine',
+            '12-6': 'Nicolas', '12-13': 'Lucie', '12-21': 'Hiver', '12-25': 'Noël', '12-31': 'Sylvestre'
+        };
+
+        function getSaintDay() {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            const key = `${month}-${day}`;
+
+            const saint = saints[key];
+            if (saint) {
+                return `Bonne fête ${saint} !`;
+            }
+            return 'Bonne journée !';
+        }
 
         async function fetchWeather() {
             try {
@@ -752,6 +789,7 @@
             document.getElementById('temp-min').textContent = `${tempMin}°C`;
             document.getElementById('sunrise').textContent = sunrise.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('sunset').textContent = sunset.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('saint-day').textContent = getSaintDay();
 
             const iconClass = weatherIcons[iconCode] || 'fa-sun';
             document.getElementById('current-icon').innerHTML = `<i class="fas ${iconClass}"></i>`;
@@ -790,8 +828,8 @@
                     <div class="forecast-day-name">${dayName}</div>
                     <div class="forecast-icon"><i class="fas ${iconClass}"></i></div>
                     <div class="forecast-temp-range">
-                        <span class="temp-max">${tempMax}°C</span>
                         <span class="temp-min">${tempMin}°C</span>
+                        <span class="temp-max">${tempMax}°C</span>
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
@@ -812,6 +850,7 @@
             document.getElementById('temp-min').textContent = '14°C';
             document.getElementById('sunrise').textContent = '07:45';
             document.getElementById('sunset').textContent = '18:30';
+            document.getElementById('saint-day').textContent = getSaintDay();
 
             const forecastContainer = document.getElementById('forecast-container');
             const sampleDays = [
@@ -827,8 +866,8 @@
                     <div class="forecast-day-name">${item.day}</div>
                     <div class="forecast-icon"><i class="fas ${item.icon}"></i></div>
                     <div class="forecast-temp-range">
-                        <span class="temp-max">${item.max}°C</span>
                         <span class="temp-min">${item.min}°C</span>
+                        <span class="temp-max">${item.max}°C</span>
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
