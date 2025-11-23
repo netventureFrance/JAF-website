@@ -219,7 +219,8 @@
         .weather-widget {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1.5rem 0;
+            padding: 2.5rem 0;
+            margin-top: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -250,6 +251,20 @@
             text-transform: capitalize;
             font-size: 1.1rem;
             opacity: 0.9;
+        }
+
+        .weather-details {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .weather-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         .weather-location {
@@ -286,6 +301,21 @@
         .forecast-temp {
             font-size: 1.1rem;
             font-weight: 600;
+        }
+
+        .forecast-temp-range {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .temp-max {
+            color: #ffd700;
+        }
+
+        .temp-min {
+            opacity: 0.8;
         }
 
         @media (max-width: 768px) {
@@ -344,6 +374,24 @@
                         </div>
                         <div class="weather-temp" id="current-temp">--°C</div>
                         <div class="weather-description" id="current-desc">Chargement...</div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item">
+                                <i class="fas fa-temperature-high"></i>
+                                <span id="temp-max">--°C</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <i class="fas fa-temperature-low"></i>
+                                <span id="temp-min">--°C</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <i class="fas fa-sunrise"></i>
+                                <span id="sunrise">--:--</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <i class="fas fa-sunset"></i>
+                                <span id="sunset">--:--</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="weather-forecast" id="forecast-container">
@@ -691,11 +739,19 @@
 
         function updateCurrentWeather(data) {
             const temp = Math.round(data.main.temp);
+            const tempMax = Math.round(data.main.temp_max);
+            const tempMin = Math.round(data.main.temp_min);
             const description = data.weather[0].description;
             const iconCode = data.weather[0].icon;
+            const sunrise = new Date(data.sys.sunrise * 1000);
+            const sunset = new Date(data.sys.sunset * 1000);
 
             document.getElementById('current-temp').textContent = `${temp}°C`;
             document.getElementById('current-desc').textContent = description;
+            document.getElementById('temp-max').textContent = `${tempMax}°C`;
+            document.getElementById('temp-min').textContent = `${tempMin}°C`;
+            document.getElementById('sunrise').textContent = sunrise.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('sunset').textContent = sunset.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
             const iconClass = weatherIcons[iconCode] || 'fa-sun';
             document.getElementById('current-icon').innerHTML = `<i class="fas ${iconClass}"></i>`;
@@ -723,7 +779,8 @@
             forecasts.forEach(item => {
                 const date = new Date(item.dt * 1000);
                 const dayName = dayNames[date.getDay()];
-                const temp = Math.round(item.main.temp);
+                const tempMax = Math.round(item.main.temp_max);
+                const tempMin = Math.round(item.main.temp_min);
                 const iconCode = item.weather[0].icon;
                 const iconClass = weatherIcons[iconCode] || 'fa-sun';
 
@@ -732,7 +789,10 @@
                 forecastDay.innerHTML = `
                     <div class="forecast-day-name">${dayName}</div>
                     <div class="forecast-icon"><i class="fas ${iconClass}"></i></div>
-                    <div class="forecast-temp">${temp}°C</div>
+                    <div class="forecast-temp-range">
+                        <span class="temp-max">${tempMax}°C</span>
+                        <span class="temp-min">${tempMin}°C</span>
+                    </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
             });
@@ -748,12 +808,17 @@
             // Show sample data when API key is not configured
             document.getElementById('current-temp').textContent = '18°C';
             document.getElementById('current-desc').textContent = 'ensoleillé';
+            document.getElementById('temp-max').textContent = '22°C';
+            document.getElementById('temp-min').textContent = '14°C';
+            document.getElementById('sunrise').textContent = '07:45';
+            document.getElementById('sunset').textContent = '18:30';
+
             const forecastContainer = document.getElementById('forecast-container');
             const sampleDays = [
-                { day: 'Lun', icon: 'fa-sun', temp: '19' },
-                { day: 'Mar', icon: 'fa-cloud-sun', temp: '17' },
-                { day: 'Mer', icon: 'fa-cloud', temp: '16' },
-                { day: 'Jeu', icon: 'fa-cloud-sun-rain', temp: '15' }
+                { day: 'Lun', icon: 'fa-sun', max: '21', min: '13' },
+                { day: 'Mar', icon: 'fa-cloud-sun', max: '19', min: '12' },
+                { day: 'Mer', icon: 'fa-cloud', max: '17', min: '11' },
+                { day: 'Jeu', icon: 'fa-cloud-sun-rain', max: '16', min: '10' }
             ];
             sampleDays.forEach(item => {
                 const forecastDay = document.createElement('div');
@@ -761,7 +826,10 @@
                 forecastDay.innerHTML = `
                     <div class="forecast-day-name">${item.day}</div>
                     <div class="forecast-icon"><i class="fas ${item.icon}"></i></div>
-                    <div class="forecast-temp">${item.temp}°C</div>
+                    <div class="forecast-temp-range">
+                        <span class="temp-max">${item.max}°C</span>
+                        <span class="temp-min">${item.min}°C</span>
+                    </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
             });
