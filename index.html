@@ -152,6 +152,68 @@
                 padding: 1rem;
             }
         }
+
+        /* Info Zone Section */
+        .info-zone-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem 0;
+            color: white;
+        }
+
+        .info-zone-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .info-zone-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .info-zone-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .info-zone-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-zone-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .info-zone-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .info-zone-title {
+                font-size: 1.5rem;
+            }
+
+            .info-zone-subtitle {
+                font-size: 1rem;
+            }
+
+            .info-zone-content {
+                padding: 1.5rem;
+            }
+
+            .info-zone-content p {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -272,6 +334,24 @@
                 </div>
             </div>
         </section>
+
+        <!-- Info Zone Section -->
+        <section class="info-zone-section" role="region" aria-labelledby="info-zone-heading">
+            <div class="container">
+                <div class="info-zone-container">
+                    <h2 id="info-zone-heading" class="info-zone-title">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i>
+                        Le CSP (Conseil Syndical Principal)
+                    </h2>
+                    <p class="info-zone-subtitle">Informations importantes</p>
+                    <div class="info-zone-content">
+                        <p>Le Conseil Syndical Principal (CSP) est votre interlocuteur privilégié pour toutes les questions concernant la gestion de la copropriété.</p>
+                        <p>Pour toute information ou demande, n'hésitez pas à contacter le CSP via les canaux de communication mis à votre disposition.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- WhatsApp Community Section -->
         <section class="whatsapp-section" role="region" aria-labelledby="whatsapp-heading">
             <div class="container">
