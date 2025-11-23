@@ -800,7 +800,7 @@
 
                 const forecastData = await forecastResponse.json();
 
-                updateCurrentWeather(currentData);
+                updateCurrentWeather(currentData, forecastData);
                 updateForecast(forecastData);
             } catch (error) {
                 console.error('Error fetching weather:', error);
@@ -810,14 +810,28 @@
             }
         }
 
-        function updateCurrentWeather(data) {
+        function updateCurrentWeather(data, forecastData) {
             const temp = Math.round(data.main.temp);
-            const tempMax = Math.round(data.main.temp_max);
-            const tempMin = Math.round(data.main.temp_min);
             const description = data.weather[0].description;
             const iconCode = data.weather[0].icon;
             const sunrise = new Date(data.sys.sunrise * 1000);
             const sunset = new Date(data.sys.sunset * 1000);
+
+            // Calculate actual daily min/max from forecast data for today
+            const today = new Date();
+            const todayStr = today.toDateString();
+            let tempMax = temp;
+            let tempMin = temp;
+
+            if (forecastData && forecastData.list) {
+                forecastData.list.forEach(item => {
+                    const itemDate = new Date(item.dt * 1000);
+                    if (itemDate.toDateString() === todayStr) {
+                        tempMax = Math.max(tempMax, Math.round(item.main.temp_max));
+                        tempMin = Math.min(tempMin, Math.round(item.main.temp_min));
+                    }
+                });
+            }
 
             document.getElementById('current-temp').textContent = `${temp}°C`;
             document.getElementById('current-desc').textContent = description;
