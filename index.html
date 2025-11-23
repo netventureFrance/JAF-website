@@ -396,9 +396,12 @@
                             <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">
                                 📅 Éphéméride
                             </div>
-                            <div style="font-size: 0.9rem; opacity: 0.95; line-height: 1.6;">
+                            <div style="font-size: 0.85rem; opacity: 0.95; line-height: 1.8;">
                                 <div id="ephemeris-today">Aujourd'hui: ...</div>
                                 <div id="ephemeris-tomorrow">Demain: ...</div>
+                                <div id="ephemeris-details" style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.85;">
+                                    Jour <span id="day-of-year">0</span>/365 • Semaine <span id="week-num">0</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -750,6 +753,21 @@
             return saints[key] || null;
         }
 
+        function getDayOfYear(date) {
+            const start = new Date(date.getFullYear(), 0, 0);
+            const diff = date - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        function getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+        }
+
         function getEphemeris() {
             const today = new Date();
             const tomorrow = new Date(today);
@@ -758,6 +776,10 @@
             const monthNames = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
                                'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
             const dayNames = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+
+            // Calculate day of year and week number
+            const dayOfYear = getDayOfYear(today);
+            const weekNum = getWeekNumber(today);
 
             // Today
             const todaySaint = getSaintForDate(today);
@@ -773,7 +795,12 @@
                 `${tomorrowStr} - Fête ${tomorrowSaint}` :
                 `${tomorrowStr}`;
 
-            return { today: todayEph, tomorrow: tomorrowEph };
+            return {
+                today: todayEph,
+                tomorrow: tomorrowEph,
+                dayOfYear: dayOfYear,
+                weekNum: weekNum
+            };
         }
 
         async function fetchWeather() {
@@ -843,6 +870,8 @@
             const ephemeris = getEphemeris();
             document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
             document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
+            document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
+            document.getElementById('week-num').textContent = ephemeris.weekNum;
 
             const iconClass = weatherIcons[iconCode] || 'fa-sun';
             document.getElementById('current-icon').innerHTML = `<i class="fas ${iconClass}"></i>`;
@@ -874,6 +903,7 @@
                 const tempMin = Math.round(item.main.temp_min);
                 const iconCode = item.weather[0].icon;
                 const iconClass = weatherIcons[iconCode] || 'fa-sun';
+                const windSpeed = Math.round(item.wind.speed * 3.6); // Convert m/s to km/h
 
                 const forecastDay = document.createElement('div');
                 forecastDay.className = 'forecast-day';
@@ -881,8 +911,11 @@
                     <div class="forecast-day-name">${dayName}</div>
                     <div class="forecast-icon"><i class="fas ${iconClass}"></i></div>
                     <div class="forecast-temp-range">
-                        <span class="temp-min">${tempMin}°C</span>
-                        <span class="temp-max">${tempMax}°C</span>
+                        <span class="temp-min">${tempMin}°</span>
+                        <span class="temp-max">${tempMax}°</span>
+                    </div>
+                    <div style="font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8;">
+                        💨 ${windSpeed} km/h
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
@@ -902,15 +935,17 @@
             const ephemeris = getEphemeris();
             document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
             document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
+            document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
+            document.getElementById('week-num').textContent = ephemeris.weekNum;
             console.log('Current weather data loaded');
 
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.innerHTML = ''; // Clear existing content
             const sampleDays = [
-                { day: 'Lun', icon: 'fa-sun', max: '21', min: '13' },
-                { day: 'Mar', icon: 'fa-cloud-sun', max: '19', min: '12' },
-                { day: 'Mer', icon: 'fa-cloud', max: '17', min: '11' },
-                { day: 'Jeu', icon: 'fa-cloud-sun-rain', max: '16', min: '10' }
+                { day: 'Lun', icon: 'fa-sun', max: '21', min: '13', wind: '12' },
+                { day: 'Mar', icon: 'fa-cloud-sun', max: '19', min: '12', wind: '15' },
+                { day: 'Mer', icon: 'fa-cloud', max: '17', min: '11', wind: '18' },
+                { day: 'Jeu', icon: 'fa-cloud-sun-rain', max: '16', min: '10', wind: '22' }
             ];
             sampleDays.forEach(item => {
                 const forecastDay = document.createElement('div');
@@ -919,8 +954,11 @@
                     <div class="forecast-day-name">${item.day}</div>
                     <div class="forecast-icon"><i class="fas ${item.icon}"></i></div>
                     <div class="forecast-temp-range">
-                        <span class="temp-min">${item.min}°C</span>
-                        <span class="temp-max">${item.max}°C</span>
+                        <span class="temp-min">${item.min}°</span>
+                        <span class="temp-max">${item.max}°</span>
+                    </div>
+                    <div style="font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8;">
+                        💨 ${item.wind} km/h
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
