@@ -779,6 +779,7 @@
                 updateForecast(forecastData);
             } catch (error) {
                 console.error('Error fetching weather:', error);
+                console.log('Falling back to sample weather data');
                 // Fall back to sample data if API fails
                 showSampleWeather();
             }
@@ -847,6 +848,7 @@
         }
 
         function showSampleWeather() {
+            console.log('Loading sample weather data...');
             // Show sample data when API fails or is not configured
             document.getElementById('current-temp').textContent = '18°C';
             document.getElementById('current-desc').textContent = 'ensoleillé';
@@ -855,6 +857,7 @@
             document.getElementById('sunrise').textContent = '07:45';
             document.getElementById('sunset').textContent = '18:30';
             document.getElementById('saint-day').textContent = getSaintDay();
+            console.log('Current weather data loaded');
 
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.innerHTML = ''; // Clear existing content
@@ -877,16 +880,24 @@
                 `;
                 forecastContainer.appendChild(forecastDay);
             });
+            console.log('Sample weather data fully loaded (current + forecast)');
         }
 
-        // Fetch weather on page load
-        if (WEATHER_API_KEY !== 'YOUR_API_KEY' && WEATHER_API_KEY !== '') {
-            fetchWeather();
-            // Refresh every 30 minutes
-            setInterval(fetchWeather, 30 * 60 * 1000);
-        } else {
-            showSampleWeather();
-        }
+        // Initialize weather on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing weather widget...');
+            console.log('API Key configured:', WEATHER_API_KEY !== 'YOUR_API_KEY' && WEATHER_API_KEY !== '');
+
+            if (WEATHER_API_KEY !== 'YOUR_API_KEY' && WEATHER_API_KEY !== '') {
+                console.log('Attempting to fetch real weather data...');
+                fetchWeather();
+                // Refresh every 30 minutes
+                setInterval(fetchWeather, 30 * 60 * 1000);
+            } else {
+                console.log('Showing sample weather data...');
+                showSampleWeather();
+            }
+        });
     </script>
 
     <script src="nav.js"></script>
