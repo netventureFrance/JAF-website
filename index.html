@@ -392,9 +392,14 @@
                                 <span id="sunset">--:--</span>
                             </div>
                         </div>
-                        <div style="margin-top: 0.75rem; font-size: 0.95rem; opacity: 0.9;">
-                            <i class="fas fa-calendar-day"></i>
-                            <span id="saint-day">Bonne fête !</span>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                            <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">
+                                📅 Éphéméride
+                            </div>
+                            <div style="font-size: 0.9rem; opacity: 0.95; line-height: 1.6;">
+                                <div id="ephemeris-today">Aujourd'hui: ...</div>
+                                <div id="ephemeris-tomorrow">Demain: ...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -738,17 +743,37 @@
             '12-6': 'Nicolas', '12-13': 'Lucie', '12-21': 'Hiver', '12-25': 'Noël', '12-31': 'Sylvestre'
         };
 
-        function getSaintDay() {
-            const today = new Date();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
+        function getSaintForDate(date) {
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
             const key = `${month}-${day}`;
+            return saints[key] || null;
+        }
 
-            const saint = saints[key];
-            if (saint) {
-                return `Bonne fête ${saint} !`;
-            }
-            return 'Bonne journée !';
+        function getEphemeris() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            const monthNames = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                               'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+            const dayNames = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+
+            // Today
+            const todaySaint = getSaintForDate(today);
+            const todayStr = `${dayNames[today.getDay()]} ${today.getDate()} ${monthNames[today.getMonth()]}`;
+            const todayEph = todaySaint ?
+                `${todayStr} - Bonne fête ${todaySaint} !` :
+                `${todayStr} - Bonne journée !`;
+
+            // Tomorrow
+            const tomorrowSaint = getSaintForDate(tomorrow);
+            const tomorrowStr = `${dayNames[tomorrow.getDay()]} ${tomorrow.getDate()} ${monthNames[tomorrow.getMonth()]}`;
+            const tomorrowEph = tomorrowSaint ?
+                `${tomorrowStr} - Fête ${tomorrowSaint}` :
+                `${tomorrowStr}`;
+
+            return { today: todayEph, tomorrow: tomorrowEph };
         }
 
         async function fetchWeather() {
@@ -800,7 +825,10 @@
             document.getElementById('temp-min').textContent = `${tempMin}°C`;
             document.getElementById('sunrise').textContent = sunrise.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('sunset').textContent = sunset.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('saint-day').textContent = getSaintDay();
+
+            const ephemeris = getEphemeris();
+            document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
+            document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
 
             const iconClass = weatherIcons[iconCode] || 'fa-sun';
             document.getElementById('current-icon').innerHTML = `<i class="fas ${iconClass}"></i>`;
@@ -856,7 +884,10 @@
             document.getElementById('temp-min').textContent = '14°C';
             document.getElementById('sunrise').textContent = '07:45';
             document.getElementById('sunset').textContent = '18:30';
-            document.getElementById('saint-day').textContent = getSaintDay();
+
+            const ephemeris = getEphemeris();
+            document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
+            document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
             console.log('Current weather data loaded');
 
             const forecastContainer = document.getElementById('forecast-container');
