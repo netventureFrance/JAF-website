@@ -730,20 +730,20 @@
                         {
                             label: 'Propriétaires',
                             data: propertyData.map(item => item.proprietaires),
-                            backgroundColor: 'rgba(37, 99, 235, 0.8)',
-                            borderColor: 'rgb(37, 99, 235)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                            borderColor: 'rgb(52, 152, 219)',
                             borderWidth: 2,
                             borderRadius: 8,
-                            hoverBackgroundColor: 'rgba(37, 99, 235, 1)'
+                            hoverBackgroundColor: 'rgba(52, 152, 219, 1)'
                         },
                         {
                             label: 'Locataires',
                             data: propertyData.map(item => item.locataires),
-                            backgroundColor: 'rgba(14, 165, 233, 0.8)',
-                            borderColor: 'rgb(14, 165, 233)',
+                            backgroundColor: 'rgba(46, 204, 113, 0.8)',
+                            borderColor: 'rgb(46, 204, 113)',
                             borderWidth: 2,
                             borderRadius: 8,
-                            hoverBackgroundColor: 'rgba(14, 165, 233, 1)'
+                            hoverBackgroundColor: 'rgba(46, 204, 113, 1)'
                         }
                     ]
                 },
@@ -772,7 +772,7 @@
                             bodyFont: {
                                 size: 13
                             },
-                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            borderColor: 'rgba(52, 152, 219, 0.5)',
                             borderWidth: 1,
                             cornerRadius: 8
                         }
@@ -866,7 +866,7 @@
                             bodyFont: {
                                 size: 13
                             },
-                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            borderColor: 'rgba(52, 152, 219, 0.5)',
                             borderWidth: 1,
                             cornerRadius: 8,
                             callbacks: {
@@ -916,8 +916,8 @@
                 { name: 'Externes (Locataires)', value: 124 } // Propriétaires externes qui louent leur logement
             ];
 
-            const COLORS = ['rgba(37, 99, 235, 0.8)', 'rgba(245, 158, 11, 0.8)'];
-            const BORDER_COLORS = ['rgb(37, 99, 235)', 'rgb(245, 158, 11)'];
+            const COLORS = ['rgba(52, 152, 219, 0.8)', 'rgba(230, 126, 34, 0.8)'];
+            const BORDER_COLORS = ['rgb(52, 152, 219)', 'rgb(230, 126, 34)'];
 
             // Créer le graphique circulaire
             const pieCtx = document.getElementById('pie-chart').getContext('2d');
@@ -931,7 +931,7 @@
                             backgroundColor: COLORS,
                             borderColor: BORDER_COLORS,
                             borderWidth: 3,
-                            hoverBackgroundColor: ['rgba(37, 99, 235, 1)', 'rgba(245, 158, 11, 1)'],
+                            hoverBackgroundColor: ['rgba(52, 152, 219, 1)', 'rgba(230, 126, 34, 1)'],
                             hoverBorderWidth: 4
                         }
                     ]
@@ -953,7 +953,7 @@
                             bodyFont: {
                                 size: 13
                             },
-                            borderColor: 'rgba(37, 99, 235, 0.5)',
+                            borderColor: 'rgba(52, 152, 219, 0.5)',
                             borderWidth: 1,
                             cornerRadius: 8,
                             callbacks: {
