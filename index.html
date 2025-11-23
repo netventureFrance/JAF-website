@@ -214,6 +214,96 @@
                 font-size: 1rem;
             }
         }
+
+        /* Weather Widget */
+        .weather-widget {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .weather-current {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+        }
+
+        .weather-temp {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .weather-description {
+            text-transform: capitalize;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .weather-location {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-forecast {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .forecast-day {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            min-width: 80px;
+        }
+
+        .forecast-day-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .forecast-icon {
+            font-size: 1.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .forecast-temp {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .weather-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .weather-forecast {
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 0.5rem;
+            }
+
+            .forecast-day {
+                min-width: 70px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -239,6 +329,29 @@
             </div>
         </div>
     </header>
+
+    <!-- Weather Widget -->
+    <div class="weather-widget" id="weather-widget">
+        <div class="container">
+            <div class="weather-container">
+                <div class="weather-current">
+                    <div class="weather-icon" id="current-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div>
+                        <div class="weather-location">
+                            <i class="fas fa-map-marker-alt"></i> Montpellier
+                        </div>
+                        <div class="weather-temp" id="current-temp">--°C</div>
+                        <div class="weather-description" id="current-desc">Chargement...</div>
+                    </div>
+                </div>
+                <div class="weather-forecast" id="forecast-container">
+                    <!-- Forecast will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main role="main">
         <section class="hero" aria-label="Carte interactive du Jardin aux Fontaines">
@@ -521,6 +634,140 @@
             }
         })();
     </script>
+
+    <!-- Weather Widget Script -->
+    <script>
+        // Weather widget functionality
+        const WEATHER_API_KEY = 'YOUR_API_KEY'; // You'll need to get a free API key from openweathermap.org
+        const CITY = 'Montpellier';
+        const COUNTRY = 'FR';
+
+        // Weather icon mapping
+        const weatherIcons = {
+            '01d': 'fa-sun',
+            '01n': 'fa-moon',
+            '02d': 'fa-cloud-sun',
+            '02n': 'fa-cloud-moon',
+            '03d': 'fa-cloud',
+            '03n': 'fa-cloud',
+            '04d': 'fa-cloud',
+            '04n': 'fa-cloud',
+            '09d': 'fa-cloud-showers-heavy',
+            '09n': 'fa-cloud-showers-heavy',
+            '10d': 'fa-cloud-sun-rain',
+            '10n': 'fa-cloud-moon-rain',
+            '11d': 'fa-bolt',
+            '11n': 'fa-bolt',
+            '13d': 'fa-snowflake',
+            '13n': 'fa-snowflake',
+            '50d': 'fa-smog',
+            '50n': 'fa-smog'
+        };
+
+        // Day names in French
+        const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+
+        async function fetchWeather() {
+            try {
+                // Fetch current weather
+                const currentResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=${CITY},${COUNTRY}&appid=${WEATHER_API_KEY}&units=metric&lang=fr`
+                );
+                const currentData = await currentResponse.json();
+
+                // Fetch 5-day forecast
+                const forecastResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/forecast?q=${CITY},${COUNTRY}&appid=${WEATHER_API_KEY}&units=metric&lang=fr`
+                );
+                const forecastData = await forecastResponse.json();
+
+                updateCurrentWeather(currentData);
+                updateForecast(forecastData);
+            } catch (error) {
+                console.error('Error fetching weather:', error);
+                document.getElementById('current-desc').textContent = 'Météo non disponible';
+            }
+        }
+
+        function updateCurrentWeather(data) {
+            const temp = Math.round(data.main.temp);
+            const description = data.weather[0].description;
+            const iconCode = data.weather[0].icon;
+
+            document.getElementById('current-temp').textContent = `${temp}°C`;
+            document.getElementById('current-desc').textContent = description;
+
+            const iconClass = weatherIcons[iconCode] || 'fa-sun';
+            document.getElementById('current-icon').innerHTML = `<i class="fas ${iconClass}"></i>`;
+        }
+
+        function updateForecast(data) {
+            const forecastContainer = document.getElementById('forecast-container');
+            forecastContainer.innerHTML = '';
+
+            // Get one forecast per day (around noon)
+            const dailyForecasts = {};
+            data.list.forEach(item => {
+                const date = new Date(item.dt * 1000);
+                const dateStr = date.toDateString();
+
+                // Get the forecast around 12:00
+                if (!dailyForecasts[dateStr] || date.getHours() === 12) {
+                    dailyForecasts[dateStr] = item;
+                }
+            });
+
+            // Display next 4 days
+            const forecasts = Object.values(dailyForecasts).slice(1, 5);
+
+            forecasts.forEach(item => {
+                const date = new Date(item.dt * 1000);
+                const dayName = dayNames[date.getDay()];
+                const temp = Math.round(item.main.temp);
+                const iconCode = item.weather[0].icon;
+                const iconClass = weatherIcons[iconCode] || 'fa-sun';
+
+                const forecastDay = document.createElement('div');
+                forecastDay.className = 'forecast-day';
+                forecastDay.innerHTML = `
+                    <div class="forecast-day-name">${dayName}</div>
+                    <div class="forecast-icon"><i class="fas ${iconClass}"></i></div>
+                    <div class="forecast-temp">${temp}°C</div>
+                `;
+                forecastContainer.appendChild(forecastDay);
+            });
+        }
+
+        // Fetch weather on page load
+        // Note: You need to replace 'YOUR_API_KEY' with an actual API key from openweathermap.org
+        if (WEATHER_API_KEY !== 'YOUR_API_KEY') {
+            fetchWeather();
+            // Refresh every 30 minutes
+            setInterval(fetchWeather, 30 * 60 * 1000);
+        } else {
+            // Show sample data when API key is not configured
+            document.getElementById('current-temp').textContent = '18°C';
+            document.getElementById('current-desc').textContent = 'ensoleillé';
+            const forecastContainer = document.getElementById('forecast-container');
+            const sampleDays = [
+                { day: 'Lun', icon: 'fa-sun', temp: '19' },
+                { day: 'Mar', icon: 'fa-cloud-sun', temp: '17' },
+                { day: 'Mer', icon: 'fa-cloud', temp: '16' },
+                { day: 'Jeu', icon: 'fa-cloud-sun-rain', temp: '15' }
+            ];
+            sampleDays.forEach(item => {
+                const forecastDay = document.createElement('div');
+                forecastDay.className = 'forecast-day';
+                forecastDay.innerHTML = `
+                    <div class="forecast-day-name">${item.day}</div>
+                    <div class="forecast-icon"><i class="fas ${item.icon}"></i></div>
+                    <div class="forecast-temp">${item.temp}°C</div>
+                `;
+                forecastContainer.appendChild(forecastDay);
+            });
+        }
+    </script>
+
     <script src="nav.js"></script>
 
     <!-- WhatsApp Integration -->
