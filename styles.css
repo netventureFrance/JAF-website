@@ -133,6 +133,8 @@ nav ul li a[aria-current="page"] {
     cursor: pointer;
     padding: 0.5rem;
     z-index: 101;
+    position: absolute;
+    right: 0;
 }
 
 .menu-toggle span {
