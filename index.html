@@ -877,33 +877,55 @@
             document.getElementById('current-icon').innerHTML = `<i class="fas ${iconClass}"></i>`;
         }
 
+        function getWindDirection(degrees) {
+            const directions = ['↓N', '↙NE', '←E', '↖SE', '↑S', '↗SW', '→W', '↘NW'];
+            const index = Math.round(degrees / 45) % 8;
+            return directions[index];
+        }
+
         function updateForecast(data) {
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.innerHTML = '';
 
-            // Get one forecast per day (around noon)
-            const dailyForecasts = {};
+            // Calculate actual daily min/max for each day
+            const dailyData = {};
             data.list.forEach(item => {
                 const date = new Date(item.dt * 1000);
                 const dateStr = date.toDateString();
 
-                // Get the forecast around 12:00
-                if (!dailyForecasts[dateStr] || date.getHours() === 12) {
-                    dailyForecasts[dateStr] = item;
+                if (!dailyData[dateStr]) {
+                    dailyData[dateStr] = {
+                        date: date,
+                        temps: [],
+                        winds: [],
+                        icons: []
+                    };
                 }
+
+                dailyData[dateStr].temps.push(item.main.temp);
+                dailyData[dateStr].winds.push({
+                    speed: item.wind.speed,
+                    deg: item.wind.deg
+                });
+                dailyData[dateStr].icons.push(item.weather[0].icon);
             });
 
-            // Display next 4 days
-            const forecasts = Object.values(dailyForecasts).slice(1, 5);
+            // Get the next 4 days (skip today)
+            const days = Object.values(dailyData).slice(1, 5);
 
-            forecasts.forEach(item => {
-                const date = new Date(item.dt * 1000);
-                const dayName = dayNames[date.getDay()];
-                const tempMax = Math.round(item.main.temp_max);
-                const tempMin = Math.round(item.main.temp_min);
-                const iconCode = item.weather[0].icon;
+            days.forEach(day => {
+                const dayName = dayNames[day.date.getDay()];
+                const tempMax = Math.round(Math.max(...day.temps));
+                const tempMin = Math.round(Math.min(...day.temps));
+
+                // Use the most common icon
+                const iconCode = day.icons[Math.floor(day.icons.length / 2)];
                 const iconClass = weatherIcons[iconCode] || 'fa-sun';
-                const windSpeed = Math.round(item.wind.speed * 3.6); // Convert m/s to km/h
+
+                // Average wind
+                const avgWindSpeed = Math.round((day.winds.reduce((sum, w) => sum + w.speed, 0) / day.winds.length) * 3.6);
+                const avgWindDeg = Math.round(day.winds.reduce((sum, w) => sum + w.deg, 0) / day.winds.length);
+                const windDir = getWindDirection(avgWindDeg);
 
                 const forecastDay = document.createElement('div');
                 forecastDay.className = 'forecast-day';
@@ -915,7 +937,7 @@
                         <span class="temp-max">${tempMax}°</span>
                     </div>
                     <div style="font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8;">
-                        💨 ${windSpeed} km/h
+                        ${windDir} ${avgWindSpeed} km/h
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
@@ -942,10 +964,10 @@
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.innerHTML = ''; // Clear existing content
             const sampleDays = [
-                { day: 'Lun', icon: 'fa-sun', max: '21', min: '13', wind: '12' },
-                { day: 'Mar', icon: 'fa-cloud-sun', max: '19', min: '12', wind: '15' },
-                { day: 'Mer', icon: 'fa-cloud', max: '17', min: '11', wind: '18' },
-                { day: 'Jeu', icon: 'fa-cloud-sun-rain', max: '16', min: '10', wind: '22' }
+                { day: 'Lun', icon: 'fa-sun', max: '21', min: '13', wind: '12', dir: '→W' },
+                { day: 'Mar', icon: 'fa-cloud-sun', max: '19', min: '12', wind: '15', dir: '↗SW' },
+                { day: 'Mer', icon: 'fa-cloud', max: '17', min: '11', wind: '18', dir: '↑S' },
+                { day: 'Jeu', icon: 'fa-cloud-sun-rain', max: '16', min: '10', wind: '22', dir: '↖SE' }
             ];
             sampleDays.forEach(item => {
                 const forecastDay = document.createElement('div');
@@ -958,7 +980,7 @@
                         <span class="temp-max">${item.max}°</span>
                     </div>
                     <div style="font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8;">
-                        💨 ${item.wind} km/h
+                        ${item.dir} ${item.wind} km/h
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
