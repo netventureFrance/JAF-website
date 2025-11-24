@@ -460,7 +460,13 @@
                     <!-- Header -->
                     <div class="weather-header">
                         <div class="weather-location-time">
-                            <h2>📍 Montpellier</h2>
+                            <div style="display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.25rem;">
+                                <h2 style="margin: 0;">📍 Montpellier</h2>
+                                <div style="font-size: 0.75rem; opacity: 0.75;">
+                                    Jour <span id="day-of-year">0</span>/365 • Sem. <span id="week-num">0</span> •
+                                    🌿 <span style="font-weight: 600;" id="aqi-value">--</span> <span id="aqi-label"></span>
+                                </div>
+                            </div>
                             <div style="font-size: 0.85rem; opacity: 0.8;" id="ephemeris-today-short">Chargement...</div>
                         </div>
                     </div>
@@ -513,20 +519,6 @@
                     <!-- Forecast -->
                     <div class="weather-forecast" id="forecast-container">
                         <!-- Forecast will be populated by JavaScript -->
-                    </div>
-
-                    <!-- Éphéméride & Air Quality Footer -->
-                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem;">
-                        <div style="opacity: 0.85;">
-                            <span id="ephemeris-tomorrow-short">Demain: ...</span> •
-                            Jour <span id="day-of-year">0</span>/365 •
-                            Sem. <span id="week-num">0</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span>🌿 AQI:</span>
-                            <span style="font-weight: 600;" id="aqi-value">--</span>
-                            <span id="aqi-label" style="font-size: 0.8rem;"></span>
-                        </div>
                     </div>
 
                 </div>
@@ -1019,7 +1011,6 @@
 
             const ephemeris = getEphemeris();
             document.getElementById('ephemeris-today-short').textContent = ephemeris.today;
-            document.getElementById('ephemeris-tomorrow-short').textContent = `Demain: ${ephemeris.tomorrow}`;
             document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
             document.getElementById('week-num').textContent = ephemeris.weekNum;
 
@@ -1157,7 +1148,6 @@
 
             const ephemeris = getEphemeris();
             document.getElementById('ephemeris-today-short').textContent = ephemeris.today;
-            document.getElementById('ephemeris-tomorrow-short').textContent = `Demain: ${ephemeris.tomorrow}`;
             document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
             document.getElementById('week-num').textContent = ephemeris.weekNum;
 
