@@ -531,54 +531,55 @@
                         </div>
                     </div>
 
-                    <!-- Single Row: Everything (Current Weather + Wind + Pressure + Humidity + Hourly Forecast) -->
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: stretch;">
-                        <!-- Current Weather -->
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; min-width: 180px;">
-                            <div class="weather-icon" id="current-icon" style="font-size: 4rem; opacity: 0.95; margin-bottom: 0.5rem;">☀️</div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 3rem; font-weight: 300; line-height: 1;" id="current-temp">--°</div>
-                                <div style="font-size: 0.95rem; opacity: 0.9; text-transform: capitalize; margin-top: 0.5rem;" id="current-desc">Chargement...</div>
+                    <!-- 3 Equal Height Rows -->
+                    <div style="display: grid; grid-template-rows: 1fr 1fr 1fr; gap: 1rem; height: 600px;">
+
+                        <!-- Row 1: Current Weather + Wind + Pressure + Humidity -->
+                        <div style="display: flex; gap: 1rem; align-items: stretch;">
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
+                                <div class="weather-icon" id="current-icon" style="font-size: 4rem; opacity: 0.95; margin-bottom: 0.5rem;">☀️</div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 3rem; font-weight: 300; line-height: 1;" id="current-temp">--°</div>
+                                    <div style="font-size: 0.95rem; opacity: 0.9; text-transform: capitalize; margin-top: 0.5rem;" id="current-desc">Chargement...</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
+                                <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+                                    <span>💨</span>
+                                    <span>VENT</span>
+                                </div>
+                                <div style="font-size: 2rem; font-weight: 300; line-height: 1; text-align: center;" id="wind-today">-- km/h</div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
+                                <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+                                    <span>🌡️</span>
+                                    <span>PRESSION</span>
+                                </div>
+                                <div style="font-size: 2rem; font-weight: 300; line-height: 1; text-align: center;" id="pressure-today">-- hPa</div>
+                                <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">Normal</div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
+                                <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+                                    <span>💧</span>
+                                    <span>HUMIDITÉ</span>
+                                </div>
+                                <div style="font-size: 2rem; font-weight: 300; line-height: 1; text-align: center;" id="humidity-today">--%</div>
                             </div>
                         </div>
 
-                        <!-- Wind Instrument -->
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; min-width: 160px;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
-                                <span>💨</span>
-                                <span>VENT</span>
-                            </div>
-                            <div style="font-size: 2rem; font-weight: 300; line-height: 1; text-align: center;" id="wind-today">-- km/h</div>
-                        </div>
-
-                        <!-- Pressure Instrument -->
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; min-width: 160px;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
-                                <span>🌡️</span>
-                                <span>PRESSION</span>
-                            </div>
-                            <div style="font-size: 2rem; font-weight: 300; line-height: 1; text-align: center;" id="pressure-today">-- hPa</div>
-                            <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">Normal</div>
-                        </div>
-
-                        <!-- Humidity Instrument -->
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; min-width: 160px;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
-                                <span>💧</span>
-                                <span>HUMIDITÉ</span>
-                            </div>
-                            <div style="font-size: 2rem; font-weight: 300; line-height: 1; text-align: center;" id="humidity-today">--%</div>
-                        </div>
-
-                        <!-- Hourly Forecast (fills remaining space) -->
-                        <div id="hourly-forecast" style="display: flex; gap: 0.5rem; overflow-x: auto; flex: 1; align-items: center; padding: 0 0.5rem;">
+                        <!-- Row 2: Hourly Forecast -->
+                        <div id="hourly-forecast" style="display: flex; gap: 0.75rem; overflow-x: auto; align-items: center; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">
                             <!-- Will be populated by JavaScript -->
                         </div>
-                    </div>
 
-                    <!-- Third Row: Daily Forecast -->
-                    <div class="weather-forecast" id="forecast-container" style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.15);">
-                        <!-- Forecast will be populated by JavaScript -->
+                        <!-- Row 3: Daily Forecast -->
+                        <div class="weather-forecast" id="forecast-container" style="display: flex; gap: 0.75rem; overflow-x: auto; align-items: center; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">
+                            <!-- Forecast will be populated by JavaScript -->
+                        </div>
+
                     </div>
 
                 </div>
