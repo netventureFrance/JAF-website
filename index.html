@@ -245,7 +245,7 @@
             justify-content: space-between;
             gap: 1rem;
             margin-bottom: 0.3rem;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             opacity: 1;
             flex-wrap: wrap;
             padding-bottom: 0.3rem;
@@ -347,20 +347,20 @@
         }
 
         .hourly-time {
-            font-size: 0.85rem;
+            font-size: 1rem;
             opacity: 0.75;
             font-weight: 500;
             line-height: 1;
         }
 
         .hourly-icon {
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin: 0;
             line-height: 1;
         }
 
         .hourly-temp {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 600;
             line-height: 1;
         }
@@ -430,7 +430,7 @@
         .forecast-day-name {
             font-weight: 600;
             margin-bottom: 0.2rem;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             opacity: 0.95;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -438,12 +438,12 @@
         }
 
         .forecast-icon {
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin: 0.1rem 0;
         }
 
         .forecast-temp {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
@@ -451,7 +451,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.1rem;
-            font-size: 0.8rem;
+            font-size: 0.95rem;
         }
 
         .temp-max {
@@ -533,22 +533,22 @@
                         <!-- Current Weather with icon next to temp -->
                         <div style="display: flex; align-items: center; gap: 2rem; padding: 1.5rem;">
                             <div style="text-align: left;">
-                                <div style="font-size: 5rem; font-weight: 200; line-height: 1;" id="current-temp">--°</div>
-                                <div style="font-size: 1.1rem; opacity: 0.9; text-transform: capitalize; margin-top: 0.5rem;" id="current-desc">Chargement...</div>
+                                <div style="font-size: 6rem; font-weight: 200; line-height: 1;" id="current-temp">--°</div>
+                                <div style="font-size: 1.3rem; opacity: 0.9; text-transform: capitalize; margin-top: 0.5rem;" id="current-desc">Chargement...</div>
                             </div>
-                            <div class="weather-icon" id="current-icon" style="font-size: 8rem; opacity: 0.9;">☀️</div>
+                            <div class="weather-icon" id="current-icon" style="font-size: 9rem; opacity: 0.9;">☀️</div>
                         </div>
 
                         <!-- Details: Humidity + Wind + Pressure -->
                         <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; padding: 1rem 1.5rem;">
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 1rem; font-weight: 300;" id="humidity-today">--%</span>
+                                <span style="font-size: 1.2rem; font-weight: 300;" id="humidity-today">--%</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 1rem; font-weight: 300;" id="wind-today">-- km/h</span>
+                                <span style="font-size: 1.2rem; font-weight: 300;" id="wind-today">-- km/h</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 1rem; font-weight: 300;" id="pressure-today">-- hPa</span>
+                                <span style="font-size: 1.2rem; font-weight: 300;" id="pressure-today">-- hPa</span>
                             </div>
                         </div>
 
@@ -562,9 +562,9 @@
                     <div style="display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">
                         <!-- Air Quality on the left -->
                         <div id="air-quality-display" style="display: flex; flex-direction: column; align-items: center; padding: 0 1rem; border-right: 1px solid rgba(255,255,255,0.2);">
-                            <div style="font-size: 0.75rem; opacity: 0.75; margin-bottom: 0.3rem;">Qualité de l'air</div>
-                            <div id="aqi-value" style="font-size: 1.5rem; font-weight: 600;">--</div>
-                            <div id="aqi-label" style="font-size: 0.7rem; opacity: 0.75; margin-top: 0.2rem;">--</div>
+                            <div style="font-size: 0.9rem; opacity: 0.75; margin-bottom: 0.3rem;">Qualité de l'air</div>
+                            <div id="aqi-value" style="font-size: 2rem; font-weight: 600;">--</div>
+                            <div id="aqi-label" style="font-size: 0.85rem; opacity: 0.75; margin-top: 0.2rem;">--</div>
                         </div>
 
                         <!-- Daily Forecast -->
@@ -1128,14 +1128,14 @@
                         <div class="hourly-time">${item.hour}h</div>
                         <div class="hourly-icon">${item.icon}</div>
                         <div class="hourly-temp">${item.temp}°</div>
-                        <div class="hourly-wind-dir" style="font-size: 0.75rem; opacity: 0.7; line-height: 1;">${item.windDir}</div>
-                        <div class="hourly-wind" style="font-size: 0.75rem; opacity: 0.7; line-height: 1;">${item.wind} km/h</div>
+                        <div class="hourly-wind-dir" style="font-size: 0.9rem; opacity: 0.7; line-height: 1;">${item.windDir}</div>
+                        <div class="hourly-wind" style="font-size: 0.9rem; opacity: 0.7; line-height: 1;">${item.wind} km/h</div>
                     `;
                 } else {
                     hourlyItem.innerHTML = `
-                        <div class="hourly-temp" style="font-size: 0.75rem; line-height: 1;">${item.label}</div>
+                        <div class="hourly-temp" style="font-size: 0.9rem; line-height: 1;">${item.label}</div>
                         <div class="hourly-icon">${item.icon}</div>
-                        <div class="hourly-time" style="font-size: 0.75rem; line-height: 1;">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
+                        <div class="hourly-time" style="font-size: 0.9rem; line-height: 1;">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
                     `;
                 }
 
