@@ -234,8 +234,9 @@
 
         .weather-current {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 1.5rem;
+            max-width: 600px;
         }
 
         .weather-icon {
@@ -259,6 +260,7 @@
             margin-top: 0.75rem;
             font-size: 0.95rem;
             opacity: 0.9;
+            flex-wrap: wrap;
         }
 
         .weather-detail-item {
@@ -403,6 +405,41 @@
                                     Jour <span id="day-of-year">0</span>/365 • Semaine <span id="week-num">0</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wind, Pressure, Humidity Section -->
+                <div style="width: 100%; max-width: 700px; margin: 1.5rem auto 0; padding: 1rem; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px);">
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; font-size: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-wind" style="font-size: 1.2rem;"></i>
+                            <span id="wind-today" style="font-weight: 600;">-- km/h</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-tachometer-alt" style="font-size: 1.2rem;"></i>
+                            <span id="pressure-today" style="font-weight: 600;">-- hPa</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-tint" style="font-size: 1.2rem;"></i>
+                            <span id="humidity-today" style="font-weight: 600;">-- %</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Air Quality Section -->
+                <div style="width: 100%; max-width: 700px; margin: 1rem auto 0; padding: 1rem; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px);">
+                    <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">
+                        🌿 Qualité de l'air & Allergies
+                    </div>
+                    <div style="font-size: 0.9rem; opacity: 0.95; text-align: center;">
+                        <div style="margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600;">AQI:</span>
+                            <span id="aqi-value" style="margin-left: 0.25rem;">--</span>
+                            <span id="aqi-label" style="margin-left: 0.25rem; font-size: 0.85rem;"></span>
+                        </div>
+                        <div id="pollen-info">
+                            <span id="pollen-value">--</span>
                         </div>
                     </div>
                 </div>
@@ -815,6 +852,7 @@
                 }
 
                 const currentData = await currentResponse.json();
+                console.log('Current weather data fetched successfully');
 
                 // Fetch 5-day forecast
                 const forecastResponse = await fetch(
@@ -826,9 +864,26 @@
                 }
 
                 const forecastData = await forecastResponse.json();
+                console.log('Forecast data fetched successfully');
+
+                // Fetch air pollution data using coordinates from current weather
+                const lat = currentData.coord.lat;
+                const lon = currentData.coord.lon;
+                console.log('Fetching air pollution data for coordinates:', lat, lon);
+                const airPollutionResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
+                );
 
                 updateCurrentWeather(currentData, forecastData);
                 updateForecast(forecastData);
+
+                if (airPollutionResponse.ok) {
+                    const airPollutionData = await airPollutionResponse.json();
+                    console.log('Air pollution data:', airPollutionData);
+                    updateAirQuality(airPollutionData);
+                } else {
+                    console.log('Air pollution API returned status:', airPollutionResponse.status);
+                }
             } catch (error) {
                 console.error('Error fetching weather:', error);
                 console.log('Falling back to sample weather data');
@@ -843,6 +898,13 @@
             const iconCode = data.weather[0].icon;
             const sunrise = new Date(data.sys.sunrise * 1000);
             const sunset = new Date(data.sys.sunset * 1000);
+            const windSpeed = Math.round(data.wind.speed * 3.6); // m/s to km/h
+            const windDeg = data.wind.deg;
+            const windDir = getWindDirection(windDeg);
+            const pressure = data.main.pressure;
+            const humidity = data.main.humidity;
+            console.log('Wind data - Speed:', windSpeed, 'km/h, Direction:', windDir, 'Degrees:', windDeg);
+            console.log('Pressure:', pressure, 'hPa, Humidity:', humidity, '%');
 
             // Calculate actual daily min/max from forecast data for today
             const today = new Date();
@@ -867,6 +929,18 @@
             document.getElementById('sunrise').textContent = sunrise.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('sunset').textContent = sunset.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
+            const windElement = document.getElementById('wind-today');
+            console.log('Wind element found:', windElement);
+            if (windElement) {
+                windElement.textContent = `${windDir} ${windSpeed} km/h`;
+                console.log('Wind element set to:', windElement.textContent);
+            } else {
+                console.error('wind-today element not found!');
+            }
+
+            document.getElementById('pressure-today').textContent = `${pressure} hPa`;
+            document.getElementById('humidity-today').textContent = `${humidity}%`;
+
             const ephemeris = getEphemeris();
             document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
             document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
@@ -881,6 +955,36 @@
             const directions = ['↓N', '↙NE', '←E', '↖SE', '↑S', '↗SW', '→W', '↘NW'];
             const index = Math.round(degrees / 45) % 8;
             return directions[index];
+        }
+
+        function getAQILabel(aqi) {
+            const labels = {
+                1: { text: 'Bon', color: '#50f050' },
+                2: { text: 'Acceptable', color: '#f0e641' },
+                3: { text: 'Modéré', color: '#ff8c00' },
+                4: { text: 'Mauvais', color: '#ff0000' },
+                5: { text: 'Très mauvais', color: '#99004c' }
+            };
+            return labels[aqi] || { text: '', color: '#fff' };
+        }
+
+        function updateAirQuality(data) {
+            if (data && data.list && data.list.length > 0) {
+                const aqi = data.list[0].main.aqi;
+                const aqiInfo = getAQILabel(aqi);
+
+                document.getElementById('aqi-value').textContent = aqi;
+                const aqiLabel = document.getElementById('aqi-label');
+                aqiLabel.textContent = `(${aqiInfo.text})`;
+                aqiLabel.style.color = aqiInfo.color;
+
+                // Air quality components
+                const components = data.list[0].components;
+                const pm25 = components.pm2_5.toFixed(1);
+                const pm10 = components.pm10.toFixed(1);
+
+                document.getElementById('pollen-value').textContent = `PM2.5: ${pm25} μg/m³ • PM10: ${pm10} μg/m³`;
+            }
         }
 
         function updateForecast(data) {
@@ -953,12 +1057,23 @@
             document.getElementById('temp-min').textContent = '14°C';
             document.getElementById('sunrise').textContent = '07:45';
             document.getElementById('sunset').textContent = '18:30';
+            document.getElementById('wind-today').textContent = '→W 12 km/h';
+            document.getElementById('pressure-today').textContent = '1013 hPa';
+            document.getElementById('humidity-today').textContent = '65%';
 
             const ephemeris = getEphemeris();
             document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
             document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
             document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
             document.getElementById('week-num').textContent = ephemeris.weekNum;
+
+            // Sample air quality data
+            document.getElementById('aqi-value').textContent = '2';
+            const aqiLabel = document.getElementById('aqi-label');
+            aqiLabel.textContent = '(Acceptable)';
+            aqiLabel.style.color = '#f0e641';
+            document.getElementById('pollen-value').textContent = 'PM2.5: 12.5 μg/m³ • PM10: 18.2 μg/m³';
+
             console.log('Current weather data loaded');
 
             const forecastContainer = document.getElementById('forecast-container');
