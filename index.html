@@ -1128,14 +1128,16 @@
                         <div class="hourly-time">${item.hour}h</div>
                         <div class="hourly-icon">${item.icon}</div>
                         <div class="hourly-temp">${item.temp}°</div>
-                        <div class="hourly-wind-dir" style="font-size: 0.9rem; opacity: 0.7; line-height: 1;">${item.windDir}</div>
-                        <div class="hourly-wind" style="font-size: 0.9rem; opacity: 0.7; line-height: 1;">${item.wind} km/h</div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.1rem;">
+                            <div class="hourly-wind-dir" style="font-size: 0.9rem; opacity: 0.7; line-height: 1;">${item.windDir}</div>
+                            <div class="hourly-wind" style="font-size: 0.9rem; opacity: 0.7; line-height: 1;">${item.wind} km/h</div>
+                        </div>
                     `;
                 } else {
                     hourlyItem.innerHTML = `
-                        <div class="hourly-temp" style="font-size: 0.9rem; line-height: 1;">${item.label}</div>
+                        <div class="hourly-temp" style="font-size: 1rem; opacity: 0.75; line-height: 1;">${item.label}</div>
                         <div class="hourly-icon">${item.icon}</div>
-                        <div class="hourly-time" style="font-size: 0.9rem; line-height: 1;">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
+                        <div class="hourly-time">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
                     `;
                 }
 
