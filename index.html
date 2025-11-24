@@ -1117,10 +1117,10 @@
 
                 if (item.type === 'weather') {
                     hourlyItem.innerHTML = `
-                        <div class="hourly-wind-dir" style="font-size: 0.8rem; opacity: 0.75;">${item.windDir}</div>
                         <div class="hourly-time">${item.hour}h</div>
                         <div class="hourly-icon">${item.icon}</div>
                         <div class="hourly-temp">${item.temp}°</div>
+                        <div class="hourly-wind-dir" style="font-size: 0.8rem; opacity: 0.75;">${item.windDir}</div>
                         <div class="hourly-wind" style="font-size: 0.75rem; opacity: 0.8;">${item.wind} km/h</div>
                     `;
                 } else {
