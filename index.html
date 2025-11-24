@@ -1143,15 +1143,9 @@
         }
 
         function updateAirQuality(data) {
-            if (data && data.list && data.list.length > 0) {
-                const aqi = data.list[0].main.aqi;
-                const aqiInfo = getAQILabel(aqi);
-
-                document.getElementById('aqi-value').textContent = aqi;
-                const aqiLabel = document.getElementById('aqi-label');
-                aqiLabel.textContent = aqiInfo.text;
-                aqiLabel.style.color = aqiInfo.color;
-            }
+            // Air quality display removed from UI
+            // Function kept for compatibility but does nothing
+            console.log('Air quality data received (not displayed)');
         }
 
         function updateForecast(data) {
@@ -1228,12 +1222,6 @@
             document.getElementById('ephemeris-today-short').textContent = ephemeris.today;
             document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
             document.getElementById('week-num').textContent = ephemeris.weekNum;
-
-            // Sample air quality data
-            document.getElementById('aqi-value').textContent = '2';
-            const aqiLabel = document.getElementById('aqi-label');
-            aqiLabel.textContent = 'Acceptable';
-            aqiLabel.style.color = '#f0e641';
 
             console.log('Current weather data loaded');
 
