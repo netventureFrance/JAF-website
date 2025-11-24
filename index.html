@@ -335,7 +335,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.25rem;
             padding: 0 0.5rem;
             border-radius: 8px;
             min-width: 50px;
@@ -347,20 +347,20 @@
         }
 
         .hourly-time {
-            font-size: 1rem;
+            font-size: 0.85rem;
             opacity: 0.75;
             font-weight: 500;
             line-height: 1;
         }
 
         .hourly-icon {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin: 0;
             line-height: 1;
         }
 
         .hourly-temp {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             line-height: 1;
         }
@@ -1120,14 +1120,14 @@
                         <div class="hourly-time">${item.hour}h</div>
                         <div class="hourly-icon">${item.icon}</div>
                         <div class="hourly-temp">${item.temp}°</div>
-                        <div class="hourly-wind-dir" style="font-size: 0.8rem; opacity: 0.75;">${item.windDir}</div>
-                        <div class="hourly-wind" style="font-size: 0.75rem; opacity: 0.8;">${item.wind} km/h</div>
+                        <div class="hourly-wind-dir" style="font-size: 0.75rem; opacity: 0.7; line-height: 1;">${item.windDir}</div>
+                        <div class="hourly-wind" style="font-size: 0.75rem; opacity: 0.7; line-height: 1;">${item.wind} km/h</div>
                     `;
                 } else {
                     hourlyItem.innerHTML = `
-                        <div class="hourly-temp" style="font-size: 0.8rem;">${item.label}</div>
+                        <div class="hourly-temp" style="font-size: 0.75rem; line-height: 1;">${item.label}</div>
                         <div class="hourly-icon">${item.icon}</div>
-                        <div class="hourly-time">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
+                        <div class="hourly-time" style="font-size: 0.75rem; line-height: 1;">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
                     `;
                 }
 
