@@ -467,7 +467,13 @@
                                     🌿 <span style="font-weight: 600;" id="aqi-value">--</span> <span id="aqi-label"></span>
                                 </div>
                             </div>
-                            <div style="font-size: 0.85rem; opacity: 0.8;" id="ephemeris-today-short">Chargement...</div>
+                            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; opacity: 0.8;">
+                                <div id="ephemeris-today-short">Chargement...</div>
+                                <div style="display: flex; gap: 0.75rem; font-size: 0.8rem;">
+                                    <span>🌅 <span id="sunrise">--:--</span></span>
+                                    <span>🌇 <span id="sunset">--:--</span></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -505,14 +511,6 @@
                         <div class="detail-item-compact">
                             <span>💧</span>
                             <span id="humidity-today">--%</span>
-                        </div>
-                        <div class="detail-item-compact">
-                            <span>🌅</span>
-                            <span id="sunrise">--:--</span>
-                        </div>
-                        <div class="detail-item-compact">
-                            <span>🌇</span>
-                            <span id="sunset">--:--</span>
                         </div>
                     </div>
 
