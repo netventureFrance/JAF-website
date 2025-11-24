@@ -1095,16 +1095,14 @@
             const firstTime = hourlyData[0] ? new Date(hourlyData[0].dt * 1000) : now;
             const lastTime = hourlyData[hourlyData.length - 1] ? new Date(hourlyData[hourlyData.length - 1].dt * 1000) : new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
-            // Add sunrise if within the forecast time range
-            if (sunrise >= firstTime && sunrise <= lastTime) {
-                allItems.push({
-                    time: sunrise,
-                    type: 'sunrise',
-                    hour: sunrise.getHours(),
-                    label: 'Lever',
-                    icon: '🟠↑'
-                });
-            }
+            // Always add sunrise
+            allItems.push({
+                time: sunrise,
+                type: 'sunrise',
+                hour: sunrise.getHours(),
+                label: 'Lever',
+                icon: '🟠↑'
+            });
 
             // Add sunset if within the forecast time range
             if (sunset >= firstTime && sunset <= lastTime) {
