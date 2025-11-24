@@ -219,51 +219,65 @@
         .weather-widget {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2.5rem 0;
-            margin-top: 3rem;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .weather-container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        @media (max-width: 968px) {
-            .weather-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .weather-card {
+        .weather-main-card {
             background: rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 1.5rem;
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15),
                         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .weather-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2),
-                        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
 
-        .weather-card-title {
-            font-size: 0.9rem;
+        .weather-location-time {
+            flex: 1;
+        }
+
+        .weather-location-time h2 {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin: 0 0 0.25rem 0;
+            opacity: 0.9;
+        }
+
+        .weather-current-display {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .weather-details-compact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .detail-item-compact {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            opacity: 0.85;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .weather-current {
@@ -311,47 +325,36 @@
 
         .weather-forecast {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            align-content: start;
-        }
-
-        @media (max-width: 968px) {
-            .weather-forecast {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
 
         .forecast-day {
             text-align: center;
-            background: rgba(255, 255, 255, 0.12);
-            padding: 1.5rem 1.25rem;
-            border-radius: 16px;
-            backdrop-filter: blur(20px);
-            min-width: 100px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
-                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 0.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
         }
 
         .forecast-day:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15),
-                        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .forecast-day-name {
             font-weight: 600;
-            margin-bottom: 0.75rem;
-            font-size: 0.85rem;
-            opacity: 0.85;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.8;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .forecast-icon {
-            font-size: 2.5rem;
-            margin: 1rem 0;
+            font-size: 2rem;
+            margin: 0.5rem 0;
         }
 
         .forecast-temp {
@@ -420,114 +423,74 @@
     <div class="weather-widget" id="weather-widget">
         <div class="container">
             <div class="weather-container">
+                <div class="weather-main-card">
 
-                <!-- Left Column: Combined Weather Info -->
-                <div class="weather-card">
-                    <!-- Current Weather -->
-                    <div class="weather-card-title">
-                        📍 Montpellier
+                    <!-- Header -->
+                    <div class="weather-header">
+                        <div class="weather-location-time">
+                            <h2>📍 Montpellier</h2>
+                            <div style="font-size: 0.85rem; opacity: 0.8;" id="ephemeris-today-short">Chargement...</div>
+                        </div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem;">
-                        <div class="weather-icon" id="current-icon" style="font-size: 4rem;">
+
+                    <!-- Current Weather Display -->
+                    <div class="weather-current-display">
+                        <div>
+                            <div style="font-size: 4rem; font-weight: 200; line-height: 1; margin-bottom: 0.5rem;" id="current-temp">--°C</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9; text-transform: capitalize;" id="current-desc">Chargement...</div>
+                        </div>
+                        <div class="weather-icon" id="current-icon" style="font-size: 5rem; opacity: 0.9;">
                             ☀️
                         </div>
-                        <div style="flex: 1;">
-                            <div class="weather-temp" id="current-temp" style="font-size: 3rem; font-weight: 300; line-height: 1;">--°C</div>
-                            <div class="weather-description" id="current-desc" style="font-size: 1.1rem; opacity: 0.9; margin-top: 0.5rem;">Chargement...</div>
+                    </div>
+
+                    <!-- Compact Details Grid -->
+                    <div class="weather-details-compact">
+                        <div class="detail-item-compact">
+                            <span style="opacity: 0.7;">↓↑</span>
+                            <span><span id="temp-min">--</span>° / <span id="temp-max">--</span>°</span>
+                        </div>
+                        <div class="detail-item-compact">
+                            <span>💨</span>
+                            <span id="wind-today">-- km/h</span>
+                        </div>
+                        <div class="detail-item-compact">
+                            <span>🌡️</span>
+                            <span id="pressure-today">-- hPa</span>
+                        </div>
+                        <div class="detail-item-compact">
+                            <span>💧</span>
+                            <span id="humidity-today">--%</span>
+                        </div>
+                        <div class="detail-item-compact">
+                            <span>🌅</span>
+                            <span id="sunrise">--:--</span>
+                        </div>
+                        <div class="detail-item-compact">
+                            <span>🌇</span>
+                            <span id="sunset">--:--</span>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.15);">
+
+                    <!-- Forecast -->
+                    <div class="weather-forecast" id="forecast-container">
+                        <!-- Forecast will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Éphéméride & Air Quality Footer -->
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem;">
+                        <div style="opacity: 0.85;">
+                            <span id="ephemeris-tomorrow-short">Demain: ...</span> •
+                            Jour <span id="day-of-year">0</span>/365 •
+                            Sem. <span id="week-num">0</span>
+                        </div>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 1.3rem;">↓</span>
-                            <span id="temp-min" style="font-weight: 500;">--°C</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 1.3rem;">↑</span>
-                            <span id="temp-max" style="font-weight: 500;">--°C</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 1.3rem;">🌅</span>
-                            <span id="sunrise" style="font-weight: 500;">--:--</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="font-size: 1.3rem;">🌇</span>
-                            <span id="sunset" style="font-weight: 500;">--:--</span>
+                            <span>🌿 AQI:</span>
+                            <span style="font-weight: 600;" id="aqi-value">--</span>
+                            <span id="aqi-label" style="font-size: 0.8rem;"></span>
                         </div>
                     </div>
 
-                    <!-- Conditions -->
-                    <div style="margin-top: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.15);">
-                        <div class="weather-card-title" style="margin-bottom: 1rem;">
-                            🌬️ Conditions
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <span style="font-size: 1.5rem;">💨</span>
-                                    <span style="opacity: 0.85; font-size: 0.95rem;">Vent</span>
-                                </div>
-                                <span id="wind-today" style="font-weight: 600; font-size: 1.2rem;">-- km/h</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <span style="font-size: 1.5rem;">🌡️</span>
-                                    <span style="opacity: 0.85; font-size: 0.95rem;">Pression</span>
-                                </div>
-                                <span id="pressure-today" style="font-weight: 600; font-size: 1.2rem;">-- hPa</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <span style="font-size: 1.5rem;">💧</span>
-                                    <span style="opacity: 0.85; font-size: 0.95rem;">Humidité</span>
-                                </div>
-                                <span id="humidity-today" style="font-weight: 600; font-size: 1.2rem;">-- %</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Air Quality -->
-                    <div style="margin-top: 1.5rem;">
-                        <div class="weather-card-title" style="margin-bottom: 1rem;">
-                            🌿 Qualité de l'air
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 3rem; font-weight: 200; margin: 1rem 0 0.5rem;">
-                                <span id="aqi-value">--</span>
-                            </div>
-                            <div id="aqi-label" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 1px;"></div>
-                            <div id="pollen-info" style="font-size: 0.85rem; opacity: 0.85; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.15); line-height: 1.6;">
-                                <span id="pollen-value">--</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column: Forecast -->
-                <div class="weather-forecast" id="forecast-container">
-                    <!-- Forecast will be populated by JavaScript -->
-                </div>
-
-            </div>
-
-            <!-- Éphéméride Section (Full Width Below) -->
-            <div class="weather-card" style="margin-top: 1.5rem;">
-                <div class="weather-card-title">
-                    📅 Éphéméride
-                </div>
-                <div style="font-size: 1rem; line-height: 1.8;">
-                    <div id="ephemeris-today" style="margin-bottom: 1rem; font-weight: 500;">Aujourd'hui: ...</div>
-                    <div id="ephemeris-tomorrow" style="margin-bottom: 1.5rem; opacity: 0.85;">Demain: ...</div>
-                    <div id="ephemeris-details" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.9rem; opacity: 0.8; display: flex; gap: 1.5rem; justify-content: space-around;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;" id="day-of-year">0</div>
-                            <div style="font-size: 0.75rem; opacity: 0.7;">/ 365</div>
-                        </div>
-                        <div style="width: 1px; background: rgba(255,255,255,0.1);"></div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;" id="week-num">0</div>
-                            <div style="font-size: 0.75rem; opacity: 0.7;">Semaine</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1005,28 +968,19 @@
                 });
             }
 
-            document.getElementById('current-temp').textContent = `${temp}°C`;
+            document.getElementById('current-temp').textContent = `${temp}°`;
             document.getElementById('current-desc').textContent = description;
-            document.getElementById('temp-max').textContent = `${tempMax}°C`;
-            document.getElementById('temp-min').textContent = `${tempMin}°C`;
+            document.getElementById('temp-max').textContent = tempMax;
+            document.getElementById('temp-min').textContent = tempMin;
             document.getElementById('sunrise').textContent = sunrise.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('sunset').textContent = sunset.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-
-            const windElement = document.getElementById('wind-today');
-            console.log('Wind element found:', windElement);
-            if (windElement) {
-                windElement.textContent = `${windDir} ${windSpeed} km/h`;
-                console.log('Wind element set to:', windElement.textContent);
-            } else {
-                console.error('wind-today element not found!');
-            }
-
+            document.getElementById('wind-today').textContent = `${windDir} ${windSpeed} km/h`;
             document.getElementById('pressure-today').textContent = `${pressure} hPa`;
             document.getElementById('humidity-today').textContent = `${humidity}%`;
 
             const ephemeris = getEphemeris();
-            document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
-            document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
+            document.getElementById('ephemeris-today-short').textContent = ephemeris.today;
+            document.getElementById('ephemeris-tomorrow-short').textContent = `Demain: ${ephemeris.tomorrow}`;
             document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
             document.getElementById('week-num').textContent = ephemeris.weekNum;
 
@@ -1058,15 +1012,8 @@
 
                 document.getElementById('aqi-value').textContent = aqi;
                 const aqiLabel = document.getElementById('aqi-label');
-                aqiLabel.textContent = `(${aqiInfo.text})`;
+                aqiLabel.textContent = aqiInfo.text;
                 aqiLabel.style.color = aqiInfo.color;
-
-                // Air quality components
-                const components = data.list[0].components;
-                const pm25 = components.pm2_5.toFixed(1);
-                const pm10 = components.pm10.toFixed(1);
-
-                document.getElementById('pollen-value').textContent = `PM2.5: ${pm25} μg/m³ • PM10: ${pm10} μg/m³`;
             }
         }
 
@@ -1134,10 +1081,10 @@
         function showSampleWeather() {
             console.log('Loading sample weather data...');
             // Show sample data when API fails or is not configured
-            document.getElementById('current-temp').textContent = '18°C';
+            document.getElementById('current-temp').textContent = '18°';
             document.getElementById('current-desc').textContent = 'ensoleillé';
-            document.getElementById('temp-max').textContent = '22°C';
-            document.getElementById('temp-min').textContent = '14°C';
+            document.getElementById('temp-max').textContent = '22';
+            document.getElementById('temp-min').textContent = '14';
             document.getElementById('sunrise').textContent = '07:45';
             document.getElementById('sunset').textContent = '18:30';
             document.getElementById('wind-today').textContent = '→W 12 km/h';
@@ -1145,17 +1092,16 @@
             document.getElementById('humidity-today').textContent = '65%';
 
             const ephemeris = getEphemeris();
-            document.getElementById('ephemeris-today').textContent = `Aujourd'hui: ${ephemeris.today}`;
-            document.getElementById('ephemeris-tomorrow').textContent = `Demain: ${ephemeris.tomorrow}`;
+            document.getElementById('ephemeris-today-short').textContent = ephemeris.today;
+            document.getElementById('ephemeris-tomorrow-short').textContent = `Demain: ${ephemeris.tomorrow}`;
             document.getElementById('day-of-year').textContent = ephemeris.dayOfYear;
             document.getElementById('week-num').textContent = ephemeris.weekNum;
 
             // Sample air quality data
             document.getElementById('aqi-value').textContent = '2';
             const aqiLabel = document.getElementById('aqi-label');
-            aqiLabel.textContent = '(Acceptable)';
+            aqiLabel.textContent = 'Acceptable';
             aqiLabel.style.color = '#f0e641';
-            document.getElementById('pollen-value').textContent = 'PM2.5: 12.5 μg/m³ • PM10: 18.2 μg/m³';
 
             console.log('Current weather data loaded');
 
