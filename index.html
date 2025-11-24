@@ -528,7 +528,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 1: Current Weather + Details + Hourly Forecast -->
+                    <!-- Row 1: Current Weather + Hourly Forecast -->
                     <div style="display: flex; gap: 1.5rem; align-items: stretch; margin-bottom: 0.3rem;">
                         <!-- Current Weather with icon next to temp -->
                         <div style="display: flex; align-items: center; gap: 2rem; padding: 1.5rem;">
@@ -539,8 +539,23 @@
                             <div class="weather-icon" id="current-icon" style="font-size: 9rem; opacity: 0.9;">☀️</div>
                         </div>
 
+                        <!-- Hourly Forecast -->
+                        <div id="hourly-forecast" style="display: flex; align-items: center; gap: 0.5rem; overflow-x: auto; flex: 1; padding: 1rem 0.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Air Quality + Details + Daily Forecast -->
+                    <div style="display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">
+                        <!-- Air Quality on the left -->
+                        <div id="air-quality-display" style="display: flex; flex-direction: column; align-items: center; padding: 0 1rem; border-right: 1px solid rgba(255,255,255,0.2);">
+                            <div style="font-size: 0.9rem; opacity: 0.75; margin-bottom: 0.3rem;">Qualité de l'air</div>
+                            <div id="aqi-value" style="font-size: 2rem; font-weight: 600;">--</div>
+                            <div id="aqi-label" style="font-size: 0.85rem; opacity: 0.75; margin-top: 0.2rem;">--</div>
+                        </div>
+
                         <!-- Details: Humidity + Wind + Pressure -->
-                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; padding: 1rem 1.5rem;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; padding: 0 1rem; border-right: 1px solid rgba(255,255,255,0.2);">
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
                                 <span style="font-size: 1.2rem; font-weight: 300;" id="humidity-today">--%</span>
                             </div>
@@ -550,21 +565,6 @@
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
                                 <span style="font-size: 1.2rem; font-weight: 300;" id="pressure-today">-- hPa</span>
                             </div>
-                        </div>
-
-                        <!-- Hourly Forecast -->
-                        <div id="hourly-forecast" style="display: flex; align-items: center; gap: 0.5rem; overflow-x: auto; flex: 1; padding: 1rem 0.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                    </div>
-
-                    <!-- Row 3: Daily Forecast with Air Quality -->
-                    <div style="display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">
-                        <!-- Air Quality on the left -->
-                        <div id="air-quality-display" style="display: flex; flex-direction: column; align-items: center; padding: 0 1rem; border-right: 1px solid rgba(255,255,255,0.2);">
-                            <div style="font-size: 0.9rem; opacity: 0.75; margin-bottom: 0.3rem;">Qualité de l'air</div>
-                            <div id="aqi-value" style="font-size: 2rem; font-weight: 600;">--</div>
-                            <div id="aqi-label" style="font-size: 0.85rem; opacity: 0.75; margin-top: 0.2rem;">--</div>
                         </div>
 
                         <!-- Daily Forecast -->
