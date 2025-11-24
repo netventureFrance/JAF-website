@@ -1076,7 +1076,8 @@
                     type: 'weather',
                     hour: date.getHours(),
                     temp: Math.round(item.main.temp),
-                    icon: weatherIcons[item.weather[0].icon] || '☀️'
+                    icon: weatherIcons[item.weather[0].icon] || '☀️',
+                    wind: Math.round(item.wind.speed * 3.6) // Convert m/s to km/h
                 });
             });
 
@@ -1118,6 +1119,7 @@
                         <div class="hourly-time">${item.hour}h</div>
                         <div class="hourly-icon">${item.icon}</div>
                         <div class="hourly-temp">${item.temp}°</div>
+                        <div class="hourly-wind" style="font-size: 0.75rem; opacity: 0.8;">${item.wind} km/h</div>
                     `;
                 } else {
                     hourlyItem.innerHTML = `
