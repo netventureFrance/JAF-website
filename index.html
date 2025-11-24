@@ -1136,9 +1136,9 @@
                     `;
                 } else {
                     hourlyItem.innerHTML = `
-                        <div class="hourly-temp" style="font-size: 1rem; opacity: 0.75; line-height: 1;">${item.label}</div>
-                        <div class="hourly-icon">${item.icon}</div>
                         <div class="hourly-time">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
+                        <div class="hourly-icon">${item.icon}</div>
+                        <div class="hourly-temp" style="font-size: 1rem; opacity: 0.75; line-height: 1;">${item.label}</div>
                     `;
                 }
 
