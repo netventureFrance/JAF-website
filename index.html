@@ -1215,25 +1215,41 @@
             const firstTime = hourlyData[0] ? new Date(hourlyData[0].dt * 1000) : now;
             const lastTime = hourlyData[hourlyData.length - 1] ? new Date(hourlyData[hourlyData.length - 1].dt * 1000) : new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
+            // Determine which sunrise to show
+            let displaySunrise = sunrise;
+            if (now > sunrise) {
+                // If we've passed today's sunrise, show tomorrow's sunrise
+                const tomorrowSunrise = new Date(sunrise);
+                tomorrowSunrise.setDate(tomorrowSunrise.getDate() + 1);
+                displaySunrise = tomorrowSunrise;
+            }
+
+            // Determine which sunset to show
+            let displaySunset = sunset;
+            if (now > sunset) {
+                // If we've passed today's sunset, show tomorrow's sunset
+                const tomorrowSunset = new Date(sunset);
+                tomorrowSunset.setDate(tomorrowSunset.getDate() + 1);
+                displaySunset = tomorrowSunset;
+            }
+
             // Always add sunrise
             allItems.push({
-                time: sunrise,
+                time: displaySunrise,
                 type: 'sunrise',
-                hour: sunrise.getHours(),
+                hour: displaySunrise.getHours(),
                 label: 'Lever',
                 icon: '🟠↑'
             });
 
-            // Add sunset if within the forecast time range
-            if (sunset >= firstTime && sunset <= lastTime) {
-                allItems.push({
-                    time: sunset,
-                    type: 'sunset',
-                    hour: sunset.getHours(),
-                    label: 'Coucher',
-                    icon: '🟠↓'
-                });
-            }
+            // Always add sunset
+            allItems.push({
+                time: displaySunset,
+                type: 'sunset',
+                hour: displaySunset.getHours(),
+                label: 'Coucher',
+                icon: '🟠↓'
+            });
 
             // Sort by time
             allItems.sort((a, b) => a.time - b.time);
