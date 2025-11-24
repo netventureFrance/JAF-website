@@ -225,11 +225,28 @@
         }
 
         .weather-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
             display: flex;
-            gap: 2rem;
             align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .weather-current {
@@ -278,6 +295,8 @@
         .weather-forecast {
             display: flex;
             gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .forecast-day {
@@ -366,86 +385,97 @@
     <div class="weather-widget" id="weather-widget">
         <div class="container">
             <div class="weather-container">
-                <div class="weather-current">
-                    <div class="weather-icon" id="current-icon">
-                        <i class="fas fa-sun"></i>
+
+                <!-- Card 1: Current Weather -->
+                <div class="weather-card">
+                    <div class="weather-card-title">
+                        <i class="fas fa-map-marker-alt"></i> Montpellier
                     </div>
-                    <div>
-                        <div class="weather-location">
-                            <i class="fas fa-map-marker-alt"></i> Montpellier
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="weather-icon" id="current-icon">
+                            <i class="fas fa-sun"></i>
                         </div>
-                        <div class="weather-temp" id="current-temp">--°C</div>
-                        <div class="weather-description" id="current-desc">Chargement...</div>
-                        <div class="weather-details">
-                            <div class="weather-detail-item">
-                                <i class="fas fa-temperature-low"></i>
-                                <span id="temp-min">--°C</span>
-                            </div>
-                            <div class="weather-detail-item">
-                                <i class="fas fa-temperature-high"></i>
-                                <span id="temp-max">--°C</span>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span style="font-size: 1.2em;">🌅</span>
-                                <span id="sunrise">--:--</span>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span style="font-size: 1.2em;">🌇</span>
-                                <span id="sunset">--:--</span>
-                            </div>
+                        <div style="flex: 1;">
+                            <div class="weather-temp" id="current-temp">--°C</div>
+                            <div class="weather-description" id="current-desc">Chargement...</div>
                         </div>
-                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2);">
-                            <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">
-                                📅 Éphéméride
-                            </div>
-                            <div style="font-size: 0.85rem; opacity: 0.95; line-height: 1.8;">
-                                <div id="ephemeris-today">Aujourd'hui: ...</div>
-                                <div id="ephemeris-tomorrow">Demain: ...</div>
-                                <div id="ephemeris-details" style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.85;">
-                                    Jour <span id="day-of-year">0</span>/365 • Semaine <span id="week-num">0</span>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="weather-details" style="margin-top: 1rem;">
+                        <div class="weather-detail-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <span id="temp-min">--°C</span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <i class="fas fa-temperature-high"></i>
+                            <span id="temp-max">--°C</span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span style="font-size: 1.2em;">🌅</span>
+                            <span id="sunrise">--:--</span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span style="font-size: 1.2em;">🌇</span>
+                            <span id="sunset">--:--</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Wind, Pressure, Humidity Section -->
-                <div style="width: 100%; max-width: 700px; margin: 1.5rem auto 0; padding: 1rem; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px);">
-                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; font-size: 1rem;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fas fa-wind" style="font-size: 1.2rem;"></i>
-                            <span id="wind-today" style="font-weight: 600;">-- km/h</span>
+                <!-- Card 2: Wind, Pressure, Humidity -->
+                <div class="weather-card">
+                    <div class="weather-card-title">
+                        <i class="fas fa-wind"></i> Conditions Atmosphériques
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                            <span style="opacity: 0.9;">💨 Vent</span>
+                            <span id="wind-today" style="font-weight: 600; font-size: 1.1rem;">-- km/h</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fas fa-tachometer-alt" style="font-size: 1.2rem;"></i>
-                            <span id="pressure-today" style="font-weight: 600;">-- hPa</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                            <span style="opacity: 0.9;">📊 Pression</span>
+                            <span id="pressure-today" style="font-weight: 600; font-size: 1.1rem;">-- hPa</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fas fa-tint" style="font-size: 1.2rem;"></i>
-                            <span id="humidity-today" style="font-weight: 600;">-- %</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                            <span style="opacity: 0.9;">💧 Humidité</span>
+                            <span id="humidity-today" style="font-weight: 600; font-size: 1.1rem;">-- %</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Air Quality Section -->
-                <div style="width: 100%; max-width: 700px; margin: 1rem auto 0; padding: 1rem; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px);">
-                    <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">
-                        🌿 Qualité de l'air & Allergies
+                <!-- Card 3: Éphéméride -->
+                <div class="weather-card">
+                    <div class="weather-card-title">
+                        📅 Éphéméride
                     </div>
-                    <div style="font-size: 0.9rem; opacity: 0.95; text-align: center;">
-                        <div style="margin-bottom: 0.5rem;">
-                            <span style="font-weight: 600;">AQI:</span>
-                            <span id="aqi-value" style="margin-left: 0.25rem;">--</span>
-                            <span id="aqi-label" style="margin-left: 0.25rem; font-size: 0.85rem;"></span>
+                    <div style="font-size: 0.95rem; line-height: 1.8;">
+                        <div id="ephemeris-today" style="margin-bottom: 0.5rem;">Aujourd'hui: ...</div>
+                        <div id="ephemeris-tomorrow" style="margin-bottom: 0.5rem;">Demain: ...</div>
+                        <div id="ephemeris-details" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.85rem; opacity: 0.9;">
+                            Jour <span id="day-of-year">0</span>/365 • Semaine <span id="week-num">0</span>
                         </div>
-                        <div id="pollen-info">
+                    </div>
+                </div>
+
+                <!-- Card 4: Air Quality -->
+                <div class="weather-card">
+                    <div class="weather-card-title">
+                        🌿 Qualité de l'air
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; margin: 1rem 0;">
+                            <span id="aqi-value">--</span>
+                        </div>
+                        <div id="aqi-label" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;"></div>
+                        <div id="pollen-info" style="font-size: 0.85rem; opacity: 0.9; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2);">
                             <span id="pollen-value">--</span>
                         </div>
                     </div>
                 </div>
-                <div class="weather-forecast" id="forecast-container">
-                    <!-- Forecast will be populated by JavaScript -->
-                </div>
+
+            </div>
+
+            <!-- Forecast Section (Full Width) -->
+            <div class="weather-forecast" id="forecast-container" style="margin-top: 1.5rem;">
+                <!-- Forecast will be populated by JavaScript -->
             </div>
         </div>
     </div>
