@@ -226,10 +226,16 @@
 
         .weather-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1fr 2fr;
             gap: 1.5rem;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        @media (max-width: 968px) {
+            .weather-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         .weather-card {
@@ -304,10 +310,16 @@
         }
 
         .weather-forecast {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            align-content: start;
+        }
+
+        @media (max-width: 968px) {
+            .weather-forecast {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         .forecast-day {
@@ -409,8 +421,9 @@
         <div class="container">
             <div class="weather-container">
 
-                <!-- Card 1: Current Weather -->
+                <!-- Left Column: Combined Weather Info -->
                 <div class="weather-card">
+                    <!-- Current Weather -->
                     <div class="weather-card-title">
                         📍 Montpellier
                     </div>
@@ -423,7 +436,7 @@
                             <div class="weather-description" id="current-desc" style="font-size: 1.1rem; opacity: 0.9; margin-top: 0.5rem;">Chargement...</div>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.15);">
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             <span style="font-size: 1.3rem;">↓</span>
                             <span id="temp-min" style="font-weight: 500;">--°C</span>
@@ -441,83 +454,81 @@
                             <span id="sunset" style="font-weight: 500;">--:--</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- Card 2: Wind, Pressure, Humidity -->
-                <div class="weather-card">
-                    <div class="weather-card-title">
-                        🌬️ Conditions
+                    <!-- Conditions -->
+                    <div style="margin-top: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.15);">
+                        <div class="weather-card-title" style="margin-bottom: 1rem;">
+                            🌬️ Conditions
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span style="font-size: 1.5rem;">💨</span>
+                                    <span style="opacity: 0.85; font-size: 0.95rem;">Vent</span>
+                                </div>
+                                <span id="wind-today" style="font-weight: 600; font-size: 1.2rem;">-- km/h</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span style="font-size: 1.5rem;">🌡️</span>
+                                    <span style="opacity: 0.85; font-size: 0.95rem;">Pression</span>
+                                </div>
+                                <span id="pressure-today" style="font-weight: 600; font-size: 1.2rem;">-- hPa</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span style="font-size: 1.5rem;">💧</span>
+                                    <span style="opacity: 0.85; font-size: 0.95rem;">Humidité</span>
+                                </div>
+                                <span id="humidity-today" style="font-weight: 600; font-size: 1.2rem;">-- %</span>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 1.5rem;">💨</span>
-                                <span style="opacity: 0.85; font-size: 0.95rem;">Vent</span>
-                            </div>
-                            <span id="wind-today" style="font-weight: 600; font-size: 1.3rem;">-- km/h</span>
-                        </div>
-                        <div style="height: 1px; background: rgba(255,255,255,0.1);"></div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 1.5rem;">🌡️</span>
-                                <span style="opacity: 0.85; font-size: 0.95rem;">Pression</span>
-                            </div>
-                            <span id="pressure-today" style="font-weight: 600; font-size: 1.3rem;">-- hPa</span>
-                        </div>
-                        <div style="height: 1px; background: rgba(255,255,255,0.1);"></div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 1.5rem;">💧</span>
-                                <span style="opacity: 0.85; font-size: 0.95rem;">Humidité</span>
-                            </div>
-                            <span id="humidity-today" style="font-weight: 600; font-size: 1.3rem;">-- %</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Card 3: Éphéméride -->
-                <div class="weather-card">
-                    <div class="weather-card-title">
-                        📅 Éphéméride
-                    </div>
-                    <div style="font-size: 1rem; line-height: 1.8;">
-                        <div id="ephemeris-today" style="margin-bottom: 1rem; font-weight: 500;">Aujourd'hui: ...</div>
-                        <div id="ephemeris-tomorrow" style="margin-bottom: 1.5rem; opacity: 0.85;">Demain: ...</div>
-                        <div id="ephemeris-details" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.9rem; opacity: 0.8; display: flex; gap: 1.5rem; justify-content: space-around;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;" id="day-of-year">0</div>
-                                <div style="font-size: 0.75rem; opacity: 0.7;">/ 365</div>
+                    <!-- Air Quality -->
+                    <div style="margin-top: 1.5rem;">
+                        <div class="weather-card-title" style="margin-bottom: 1rem;">
+                            🌿 Qualité de l'air
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; font-weight: 200; margin: 1rem 0 0.5rem;">
+                                <span id="aqi-value">--</span>
                             </div>
-                            <div style="width: 1px; background: rgba(255,255,255,0.1);"></div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;" id="week-num">0</div>
-                                <div style="font-size: 0.75rem; opacity: 0.7;">Semaine</div>
+                            <div id="aqi-label" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 1px;"></div>
+                            <div id="pollen-info" style="font-size: 0.85rem; opacity: 0.85; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.15); line-height: 1.6;">
+                                <span id="pollen-value">--</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 4: Air Quality -->
-                <div class="weather-card">
-                    <div class="weather-card-title">
-                        🌿 Qualité de l'air
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 4rem; font-weight: 200; margin: 1.5rem 0 1rem;">
-                            <span id="aqi-value">--</span>
-                        </div>
-                        <div id="aqi-label" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem; letter-spacing: 1px;"></div>
-                        <div id="pollen-info" style="font-size: 0.9rem; opacity: 0.85; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15); line-height: 1.6;">
-                            <span id="pollen-value">--</span>
-                        </div>
-                    </div>
+                <!-- Right Column: Forecast -->
+                <div class="weather-forecast" id="forecast-container">
+                    <!-- Forecast will be populated by JavaScript -->
                 </div>
 
             </div>
 
-            <!-- Forecast Section (Full Width) -->
-            <div class="weather-forecast" id="forecast-container" style="margin-top: 1.5rem;">
-                <!-- Forecast will be populated by JavaScript -->
+            <!-- Éphéméride Section (Full Width Below) -->
+            <div class="weather-card" style="margin-top: 1.5rem;">
+                <div class="weather-card-title">
+                    📅 Éphéméride
+                </div>
+                <div style="font-size: 1rem; line-height: 1.8;">
+                    <div id="ephemeris-today" style="margin-bottom: 1rem; font-weight: 500;">Aujourd'hui: ...</div>
+                    <div id="ephemeris-tomorrow" style="margin-bottom: 1.5rem; opacity: 0.85;">Demain: ...</div>
+                    <div id="ephemeris-details" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.9rem; opacity: 0.8; display: flex; gap: 1.5rem; justify-content: space-around;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;" id="day-of-year">0</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">/ 365</div>
+                        </div>
+                        <div style="width: 1px; background: rgba(255,255,255,0.1);"></div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;" id="week-num">0</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">Semaine</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
