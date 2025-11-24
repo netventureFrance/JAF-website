@@ -529,9 +529,9 @@
                     </div>
 
                     <!-- Row 1: Current Weather + Details + Hourly Forecast -->
-                    <div style="display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1.5rem; align-items: stretch; margin-bottom: 1rem;">
                         <!-- Current Weather with icon next to temp -->
-                        <div style="display: flex; align-items: center; gap: 2rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
                             <div style="text-align: left;">
                                 <div style="font-size: 5rem; font-weight: 200; line-height: 1;" id="current-temp">--°</div>
                                 <div style="font-size: 1.1rem; opacity: 0.9; text-transform: capitalize; margin-top: 0.5rem;" id="current-desc">Chargement...</div>
@@ -540,7 +540,7 @@
                         </div>
 
                         <!-- Details: Humidity + Wind + Pressure -->
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; padding: 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
                                 <span style="font-size: 1.3rem;">💧</span>
                                 <span style="font-size: 1rem; font-weight: 300;" id="humidity-today">--%</span>
@@ -556,7 +556,7 @@
                         </div>
 
                         <!-- Hourly Forecast -->
-                        <div id="hourly-forecast" style="display: flex; gap: 0.75rem; overflow-x: auto; flex: 1; padding: 1rem 0;">
+                        <div id="hourly-forecast" style="display: flex; gap: 0.75rem; overflow-x: auto; flex: 1; padding: 1rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
                             <!-- Will be populated by JavaScript -->
                         </div>
                     </div>
