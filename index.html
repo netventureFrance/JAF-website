@@ -521,10 +521,6 @@
                         <div class="weather-location-time">
                             <h2>📍 Montpellier</h2>
                             <div id="ephemeris-today-short">Chargement...</div>
-                            <div style="display: flex; gap: 0.75rem;">
-                                <span>🌅 <span id="sunrise">--:--</span></span>
-                                <span>🌇 <span id="sunset">--:--</span></span>
-                            </div>
                         </div>
                         <div style="display: flex; gap: 1.5rem; align-items: center;">
                             <div>Jour <span id="day-of-year">0</span>/365 • Sem. <span id="week-num">0</span></div>
@@ -1002,7 +998,7 @@
                 );
 
                 updateCurrentWeather(currentData, forecastData);
-                updateHourlyForecast(forecastData);
+                updateHourlyForecast(forecastData, currentData);
                 updateForecast(forecastData);
 
                 if (airPollutionResponse.ok) {
@@ -1036,8 +1032,6 @@
 
             document.getElementById('current-temp').textContent = `${temp}°`;
             document.getElementById('current-desc').textContent = description;
-            document.getElementById('sunrise').textContent = sunrise.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('sunset').textContent = sunset.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('wind-today').textContent = `${windDir} ${windSpeed} km/h`;
             document.getElementById('pressure-today').textContent = `${pressure} hPa`;
             document.getElementById('humidity-today').textContent = `${humidity}%`;
@@ -1057,27 +1051,74 @@
             return directions[index];
         }
 
-        function updateHourlyForecast(data) {
+        function updateHourlyForecast(data, currentData) {
             const hourlyContainer = document.getElementById('hourly-forecast');
             hourlyContainer.innerHTML = '';
 
-            // Get next 6 time slots (3-hour intervals from API)
-            const hourlyData = data.list.slice(0, 6);
+            const sunrise = new Date(currentData.sys.sunrise * 1000);
+            const sunset = new Date(currentData.sys.sunset * 1000);
+
+            // Get next 8 time slots (3-hour intervals from API)
+            const hourlyData = data.list.slice(0, 8);
+
+            // Create array with all items (hourly + sunrise + sunset)
+            const allItems = [];
 
             hourlyData.forEach(item => {
                 const date = new Date(item.dt * 1000);
-                const hour = date.getHours();
-                const temp = Math.round(item.main.temp);
-                const iconCode = item.weather[0].icon;
-                const iconSymbol = weatherIcons[iconCode] || '☀️';
+                allItems.push({
+                    time: date,
+                    type: 'weather',
+                    hour: date.getHours(),
+                    temp: Math.round(item.main.temp),
+                    icon: weatherIcons[item.weather[0].icon] || '☀️'
+                });
+            });
 
+            // Add sunrise if within forecast range
+            if (sunrise >= allItems[0].time && sunrise <= allItems[allItems.length - 1].time) {
+                allItems.push({
+                    time: sunrise,
+                    type: 'sunrise',
+                    hour: sunrise.getHours(),
+                    label: 'Sunrise',
+                    icon: '🌅'
+                });
+            }
+
+            // Add sunset if within forecast range
+            if (sunset >= allItems[0].time && sunset <= allItems[allItems.length - 1].time) {
+                allItems.push({
+                    time: sunset,
+                    type: 'sunset',
+                    hour: sunset.getHours(),
+                    label: 'Sunset',
+                    icon: '🌇'
+                });
+            }
+
+            // Sort by time
+            allItems.sort((a, b) => a.time - b.time);
+
+            // Display all items
+            allItems.forEach(item => {
                 const hourlyItem = document.createElement('div');
                 hourlyItem.className = 'hourly-item';
-                hourlyItem.innerHTML = `
-                    <div class="hourly-time">${hour}h</div>
-                    <div class="hourly-icon">${iconSymbol}</div>
-                    <div class="hourly-temp">${temp}°</div>
-                `;
+
+                if (item.type === 'weather') {
+                    hourlyItem.innerHTML = `
+                        <div class="hourly-time">${item.hour}h</div>
+                        <div class="hourly-icon">${item.icon}</div>
+                        <div class="hourly-temp">${item.temp}°</div>
+                    `;
+                } else {
+                    hourlyItem.innerHTML = `
+                        <div class="hourly-time">${item.hour < 10 ? '0' : ''}${item.hour}:${item.time.getMinutes() < 10 ? '0' : ''}${item.time.getMinutes()}</div>
+                        <div class="hourly-icon">${item.icon}</div>
+                        <div class="hourly-temp" style="font-size: 0.7rem;">${item.label}</div>
+                    `;
+                }
+
                 hourlyContainer.appendChild(hourlyItem);
             });
         }
@@ -1171,8 +1212,6 @@
             // Show sample data when API fails or is not configured
             document.getElementById('current-temp').textContent = '18°';
             document.getElementById('current-desc').textContent = 'ensoleillé';
-            document.getElementById('sunrise').textContent = '07:45';
-            document.getElementById('sunset').textContent = '18:30';
             document.getElementById('wind-today').textContent = '→W 12 km/h';
             document.getElementById('pressure-today').textContent = '1013 hPa';
             document.getElementById('humidity-today').textContent = '65%';
