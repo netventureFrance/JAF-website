@@ -528,7 +528,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 1: Current Weather + Hourly Forecast -->
+                    <!-- Row 1: Current Weather + Details + Hourly Forecast -->
                     <div style="display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1rem;">
                         <!-- Current Weather with icon next to temp -->
                         <div style="display: flex; align-items: center; gap: 2rem; padding: 1.5rem;">
@@ -539,31 +539,29 @@
                             <div class="weather-icon" id="current-icon" style="font-size: 8rem; opacity: 0.9;">☀️</div>
                         </div>
 
+                        <!-- Details: Humidity + Wind + Pressure -->
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="font-size: 1.3rem;">💧</span>
+                                <span style="font-size: 1rem; font-weight: 300;" id="humidity-today">--%</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="font-size: 1.3rem;">💨</span>
+                                <span style="font-size: 1rem; font-weight: 300;" id="wind-today">-- km/h</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="font-size: 1.3rem;">🌡️</span>
+                                <span style="font-size: 1rem; font-weight: 300;" id="pressure-today">-- hPa</span>
+                            </div>
+                        </div>
+
                         <!-- Hourly Forecast -->
                         <div id="hourly-forecast" style="display: flex; gap: 0.75rem; overflow-x: auto; flex: 1; padding: 1rem 0;">
                             <!-- Will be populated by JavaScript -->
                         </div>
                     </div>
 
-                    <!-- Row 2: Wind + Pressure + Humidity -->
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
-                            <span style="font-size: 1.5rem;">💨</span>
-                            <span style="font-size: 1.2rem; font-weight: 300;" id="wind-today">-- km/h</span>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
-                            <span style="font-size: 1.5rem;">🌡️</span>
-                            <span style="font-size: 1.2rem; font-weight: 300;" id="pressure-today">-- hPa</span>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; flex: 1;">
-                            <span style="font-size: 1.5rem;">💧</span>
-                            <span style="font-size: 1.2rem; font-weight: 300;" id="humidity-today">--%</span>
-                        </div>
-                    </div>
-
-                    <!-- Row 3: Daily Forecast -->
+                    <!-- Row 2: Daily Forecast -->
                     <div class="weather-forecast" id="forecast-container" style="display: flex; gap: 1rem; overflow-x: auto;">
                         <!-- Forecast will be populated by JavaScript -->
                     </div>
