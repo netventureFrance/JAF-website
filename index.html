@@ -1014,6 +1014,10 @@
         }
 
         function updateCurrentWeather(data, forecastData) {
+            console.log('=== Current Weather Data ===');
+            console.log('Full data object:', data);
+            console.log('Temperature (raw):', data.main.temp);
+
             const temp = Math.round(data.main.temp);
             const description = data.weather[0].description;
             const iconCode = data.weather[0].icon;
@@ -1024,6 +1028,9 @@
             const windDir = getWindDirection(windDeg);
             const pressure = data.main.pressure;
             const humidity = data.main.humidity;
+
+            console.log('Temperature (rounded):', temp + '°');
+            console.log('Description:', description);
             console.log('Wind data - Speed:', windSpeed, 'km/h, Direction:', windDir, 'Degrees:', windDeg);
             console.log('Pressure:', pressure, 'hPa, Humidity:', humidity, '%');
 
