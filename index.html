@@ -1055,6 +1055,7 @@
             const hourlyContainer = document.getElementById('hourly-forecast');
             hourlyContainer.innerHTML = '';
 
+            const now = new Date();
             const sunrise = new Date(currentData.sys.sunrise * 1000);
             const sunset = new Date(currentData.sys.sunset * 1000);
 
@@ -1075,24 +1076,27 @@
                 });
             });
 
-            // Add sunrise if within forecast range
-            if (sunrise >= allItems[0].time && sunrise <= allItems[allItems.length - 1].time) {
+            const firstTime = hourlyData[0] ? new Date(hourlyData[0].dt * 1000) : now;
+            const lastTime = hourlyData[hourlyData.length - 1] ? new Date(hourlyData[hourlyData.length - 1].dt * 1000) : new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+            // Add sunrise if it's in the future and within the next 24 hours
+            if (sunrise > now && sunrise >= firstTime && sunrise <= lastTime) {
                 allItems.push({
                     time: sunrise,
                     type: 'sunrise',
                     hour: sunrise.getHours(),
-                    label: 'Sunrise',
+                    label: 'Lever',
                     icon: '🌅'
                 });
             }
 
-            // Add sunset if within forecast range
-            if (sunset >= allItems[0].time && sunset <= allItems[allItems.length - 1].time) {
+            // Add sunset if it's in the future and within the next 24 hours
+            if (sunset > now && sunset >= firstTime && sunset <= lastTime) {
                 allItems.push({
                     time: sunset,
                     type: 'sunset',
                     hour: sunset.getHours(),
-                    label: 'Sunset',
+                    label: 'Coucher',
                     icon: '🌇'
                 });
             }
