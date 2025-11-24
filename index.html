@@ -219,20 +219,20 @@
         .weather-widget {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1.5rem 0;
+            padding: 1rem 0;
             margin-top: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .weather-container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .weather-main-card {
             background: rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            padding: 1.25rem;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15),
                         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
@@ -240,56 +240,65 @@
 
         .weather-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
+            gap: 1rem;
             margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            flex-wrap: wrap;
         }
 
         .weather-location-time {
-            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .weather-location-time h2 {
-            font-size: 1.4rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin: 0 0 0.5rem 0;
+            margin: 0;
             opacity: 0.95;
         }
 
         .weather-current-display {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
+            gap: 2rem;
+        }
+
+        .weather-current-main {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .weather-details-compact {
             display: flex;
-            gap: 2.5rem;
-            justify-content: space-around;
-            font-size: 1rem;
-            padding: 1rem 0;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            border-bottom: 1px solid rgba(255,255,255,0.15);
+            gap: 1.5rem;
+            align-items: center;
+            font-size: 0.9rem;
             flex-wrap: wrap;
         }
 
         .detail-item-compact {
             display: flex;
             align-items: center;
-            gap: 0.7rem;
-            font-size: 1.15rem;
+            gap: 0.4rem;
+            white-space: nowrap;
         }
 
         .hourly-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.25rem;
-            padding: 0.5rem 0.75rem;
+            gap: 0.15rem;
+            padding: 0.4rem 0.5rem;
             background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            min-width: 65px;
+            border-radius: 8px;
+            min-width: 50px;
             transition: background 0.3s ease;
         }
 
@@ -298,18 +307,18 @@
         }
 
         .hourly-time {
-            font-size: 0.85rem;
-            opacity: 0.8;
+            font-size: 0.7rem;
+            opacity: 0.75;
             font-weight: 500;
         }
 
         .hourly-icon {
-            font-size: 1.8rem;
-            margin: 0.25rem 0;
+            font-size: 1.4rem;
+            margin: 0.1rem 0;
         }
 
         .hourly-temp {
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
@@ -357,19 +366,19 @@
         }
 
         .weather-forecast {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
         }
 
         .forecast-day {
             text-align: center;
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.75rem 0.5rem;
-            border-radius: 12px;
+            padding: 0.5rem 0.6rem;
+            border-radius: 8px;
             backdrop-filter: blur(10px);
             transition: background 0.3s ease;
+            min-width: 70px;
         }
 
         .forecast-day:hover {
@@ -378,28 +387,28 @@
 
         .forecast-day-name {
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.75rem;
-            opacity: 0.8;
+            margin-bottom: 0.3rem;
+            font-size: 0.7rem;
+            opacity: 0.75;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .forecast-icon {
-            font-size: 2rem;
-            margin: 0.5rem 0;
+            font-size: 1.8rem;
+            margin: 0.2rem 0;
         }
 
         .forecast-temp {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 600;
         }
 
         .forecast-temp-range {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
-            font-size: 0.9rem;
+            gap: 0.15rem;
+            font-size: 0.8rem;
         }
 
         .temp-max {
@@ -411,19 +420,24 @@
         }
 
         @media (max-width: 768px) {
-            .weather-container {
+            .weather-current-display {
                 flex-direction: column;
-                gap: 1.5rem;
+                gap: 1rem;
+            }
+
+            .weather-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .weather-forecast {
                 overflow-x: auto;
                 width: 100%;
-                padding-bottom: 0.5rem;
             }
 
-            .forecast-day {
-                min-width: 70px;
+            .weather-details-compact {
+                width: 100%;
+                justify-content: space-around;
             }
         }
     </style>
@@ -458,60 +472,58 @@
             <div class="weather-container">
                 <div class="weather-main-card">
 
-                    <!-- Header -->
+                    <!-- Compact Header Row -->
                     <div class="weather-header">
                         <div class="weather-location-time">
                             <h2>📍 Montpellier</h2>
-                            <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 1.1rem; opacity: 0.9; margin-bottom: 0.5rem;">
-                                <div id="ephemeris-today-short" style="font-weight: 500;">Chargement...</div>
-                                <div style="display: flex; gap: 1rem;">
-                                    <span>🌅 <span id="sunrise">--:--</span></span>
-                                    <span>🌇 <span id="sunset">--:--</span></span>
-                                </div>
+                            <div id="ephemeris-today-short">Chargement...</div>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <span>🌅 <span id="sunrise">--:--</span></span>
+                                <span>🌇 <span id="sunset">--:--</span></span>
                             </div>
-                            <div style="font-size: 1rem; opacity: 0.8;">
-                                Jour <span id="day-of-year">0</span>/365 • Sem. <span id="week-num">0</span> •
-                                🌿 AQI <span style="font-weight: 600;" id="aqi-value">--</span> <span id="aqi-label"></span>
-                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1.5rem; align-items: center;">
+                            <div>Jour <span id="day-of-year">0</span>/365 • Sem. <span id="week-num">0</span></div>
+                            <div>🌿 <span style="font-weight: 600;" id="aqi-value">--</span> <span id="aqi-label"></span></div>
                         </div>
                     </div>
 
-                    <!-- Current Weather Display -->
+                    <!-- Main Horizontal Display -->
                     <div class="weather-current-display">
-                        <div>
-                            <div style="font-size: 5rem; font-weight: 200; line-height: 1; margin-bottom: 0.5rem;" id="current-temp">--°</div>
-                            <div style="font-size: 1.2rem; opacity: 0.9; text-transform: capitalize;" id="current-desc">Chargement...</div>
+                        <!-- Current Weather -->
+                        <div class="weather-current-main">
+                            <div class="weather-icon" id="current-icon" style="font-size: 3.5rem; opacity: 0.9;">☀️</div>
+                            <div>
+                                <div style="font-size: 2.5rem; font-weight: 300; line-height: 1;" id="current-temp">--°</div>
+                                <div style="font-size: 0.85rem; opacity: 0.85; text-transform: capitalize; margin-top: 0.25rem;" id="current-desc">Chargement...</div>
+                            </div>
                         </div>
 
                         <!-- Hourly Forecast Strip -->
-                        <div id="hourly-forecast" style="display: flex; gap: 1rem; align-items: center; margin: 0 1rem; overflow-x: auto; flex: 1; padding: 0.5rem 0;">
+                        <div id="hourly-forecast" style="display: flex; gap: 0.5rem; overflow-x: auto; flex: 1; padding: 0 0.5rem;">
                             <!-- Will be populated by JavaScript -->
                         </div>
 
-                        <div class="weather-icon" id="current-icon" style="font-size: 6rem; opacity: 0.9;">
-                            ☀️
+                        <!-- Daily Forecast -->
+                        <div class="weather-forecast" id="forecast-container">
+                            <!-- Forecast will be populated by JavaScript -->
                         </div>
-                    </div>
 
-                    <!-- Compact Details Grid -->
-                    <div class="weather-details-compact">
-                        <div class="detail-item-compact">
-                            <span>💨</span>
-                            <span id="wind-today">-- km/h</span>
+                        <!-- Details -->
+                        <div class="weather-details-compact">
+                            <div class="detail-item-compact">
+                                <span>💨</span>
+                                <span id="wind-today">-- km/h</span>
+                            </div>
+                            <div class="detail-item-compact">
+                                <span>🌡️</span>
+                                <span id="pressure-today">-- hPa</span>
+                            </div>
+                            <div class="detail-item-compact">
+                                <span>💧</span>
+                                <span id="humidity-today">--%</span>
+                            </div>
                         </div>
-                        <div class="detail-item-compact">
-                            <span>🌡️</span>
-                            <span id="pressure-today">-- hPa</span>
-                        </div>
-                        <div class="detail-item-compact">
-                            <span>💧</span>
-                            <span id="humidity-today">--%</span>
-                        </div>
-                    </div>
-
-                    <!-- Forecast -->
-                    <div class="weather-forecast" id="forecast-container">
-                        <!-- Forecast will be populated by JavaScript -->
                     </div>
 
                 </div>
@@ -1095,13 +1107,13 @@
                 forecastDay.className = 'forecast-day';
                 forecastDay.innerHTML = `
                     <div class="forecast-day-name">${dayName}</div>
-                    <div class="forecast-icon" style="font-size: 2.5rem;">${iconSymbol}</div>
+                    <div class="forecast-icon">${iconSymbol}</div>
                     <div class="forecast-temp-range">
                         <span class="temp-min">${tempMin}°</span>
                         <span class="temp-max">${tempMax}°</span>
                     </div>
-                    <div style="font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8;">
-                        ${windDir} ${avgWindSpeed} km/h
+                    <div style="font-size: 0.65rem; margin-top: 0.2rem; opacity: 0.75;">
+                        ${windDir} ${avgWindSpeed}
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
@@ -1159,23 +1171,23 @@
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.innerHTML = ''; // Clear existing content
             const sampleDays = [
-                { day: 'Lun', icon: 'fa-sun', max: '21', min: '13', wind: '12', dir: '→W' },
-                { day: 'Mar', icon: 'fa-cloud-sun', max: '19', min: '12', wind: '15', dir: '↗SW' },
-                { day: 'Mer', icon: 'fa-cloud', max: '17', min: '11', wind: '18', dir: '↑S' },
-                { day: 'Jeu', icon: 'fa-cloud-sun-rain', max: '16', min: '10', wind: '22', dir: '↖SE' }
+                { day: 'Lun', icon: '☀️', max: '21', min: '13', wind: '12', dir: '→W' },
+                { day: 'Mar', icon: '⛅', max: '19', min: '12', wind: '15', dir: '↗SW' },
+                { day: 'Mer', icon: '☁️', max: '17', min: '11', wind: '18', dir: '↑S' },
+                { day: 'Jeu', icon: '🌦️', max: '16', min: '10', wind: '22', dir: '↖SE' }
             ];
             sampleDays.forEach(item => {
                 const forecastDay = document.createElement('div');
                 forecastDay.className = 'forecast-day';
                 forecastDay.innerHTML = `
                     <div class="forecast-day-name">${item.day}</div>
-                    <div class="forecast-icon"><i class="fas ${item.icon}"></i></div>
+                    <div class="forecast-icon">${item.icon}</div>
                     <div class="forecast-temp-range">
                         <span class="temp-min">${item.min}°</span>
                         <span class="temp-max">${item.max}°</span>
                     </div>
-                    <div style="font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8;">
-                        ${item.dir} ${item.wind} km/h
+                    <div style="font-size: 0.65rem; margin-top: 0.2rem; opacity: 0.75;">
+                        ${item.dir} ${item.wind}
                     </div>
                 `;
                 forecastContainer.appendChild(forecastDay);
