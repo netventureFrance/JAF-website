@@ -558,9 +558,19 @@
                         </div>
                     </div>
 
-                    <!-- Row 3: Daily Forecast -->
-                    <div class="weather-forecast" id="forecast-container" style="display: flex; justify-content: center; gap: 1rem; overflow-x: auto; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem 0.5rem;">
-                        <!-- Forecast will be populated by JavaScript -->
+                    <!-- Row 3: Daily Forecast with Air Quality -->
+                    <div style="display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1rem;">
+                        <!-- Air Quality on the left -->
+                        <div id="air-quality-display" style="display: flex; flex-direction: column; align-items: center; padding: 0 1rem; border-right: 1px solid rgba(255,255,255,0.2);">
+                            <div style="font-size: 0.75rem; opacity: 0.75; margin-bottom: 0.3rem;">Qualité de l'air</div>
+                            <div id="aqi-value" style="font-size: 1.5rem; font-weight: 600;">--</div>
+                            <div id="aqi-label" style="font-size: 0.7rem; opacity: 0.75; margin-top: 0.2rem;">--</div>
+                        </div>
+
+                        <!-- Daily Forecast -->
+                        <div class="weather-forecast" id="forecast-container" style="display: flex; justify-content: center; gap: 1rem; overflow-x: auto; flex: 1;">
+                            <!-- Forecast will be populated by JavaScript -->
+                        </div>
                     </div>
 
                 </div>
@@ -1145,9 +1155,25 @@
         }
 
         function updateAirQuality(data) {
-            // Air quality display removed from UI
-            // Function kept for compatibility but does nothing
-            console.log('Air quality data received (not displayed)');
+            console.log('Air quality data received:', data);
+
+            if (!data || !data.list || !data.list[0]) {
+                console.log('Invalid air quality data');
+                return;
+            }
+
+            const aqi = data.list[0].main.aqi;
+            const aqiLabels = ['Excellent', 'Bon', 'Moyen', 'Médiocre', 'Mauvais'];
+            const aqiColors = ['#00e400', '#92d050', '#ffff00', '#ff7e00', '#ff0000'];
+
+            const aqiElement = document.getElementById('aqi-value');
+            const aqiLabelElement = document.getElementById('aqi-label');
+
+            if (aqiElement && aqiLabelElement) {
+                aqiElement.textContent = aqi;
+                aqiElement.style.color = aqiColors[aqi - 1] || '#ffffff';
+                aqiLabelElement.textContent = aqiLabels[aqi - 1] || 'Inconnu';
+            }
         }
 
         function updateForecast(data) {
